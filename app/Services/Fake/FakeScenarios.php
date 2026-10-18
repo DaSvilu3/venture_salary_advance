@@ -21,9 +21,52 @@ class FakeScenarios
 
     public function __construct(private readonly Repository $cache) {}
 
+    public const OPERATIONS = [self::DISBURSEMENT, self::COLLECTION, self::FUNDING, self::SALARY_VERIFICATION];
+
+    private const INDEX_KEY = 'fake-scenarios.index';
+
     public function failNext(string $operation, Employee $employee, int $times = 1): void
     {
         $this->cache->forever($this->key($operation, $employee->id), $this->pendingFailures($operation, $employee) + $times);
+        $this->remember($operation, $employee->id);
+    }
+
+    /**
+     * Every forced failure still waiting to be used.
+     *
+     * @return list<array{operation: string, employee_id: int, remaining: int}>
+     */
+    public function all(): array
+    {
+        $pending = [];
+
+        foreach ((array) $this->cache->get(self::INDEX_KEY, []) as $entry) {
+            [$operation, $employeeId] = explode(':', (string) $entry);
+            $remaining = (int) $this->cache->get($this->key($operation, (int) $employeeId), 0);
+
+            if ($remaining > 0) {
+                $pending[] = ['operation' => $operation, 'employee_id' => (int) $employeeId, 'remaining' => $remaining];
+            }
+        }
+
+        return $pending;
+    }
+
+    public function clearAll(): void
+    {
+        foreach ($this->all() as $entry) {
+            $this->cache->forget($this->key($entry['operation'], $entry['employee_id']));
+        }
+
+        $this->cache->forget(self::INDEX_KEY);
+    }
+
+    private function remember(string $operation, int $employeeId): void
+    {
+        $index = (array) $this->cache->get(self::INDEX_KEY, []);
+        $index[] = "{$operation}:{$employeeId}";
+
+        $this->cache->forever(self::INDEX_KEY, array_values(array_unique($index)));
     }
 
     public function pendingFailures(string $operation, Employee $employee): int

@@ -7,6 +7,7 @@ use Database\Factories\DisclosureFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * A versioned statement of terms the employee accepts with each advance.
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property CarbonImmutable|null $published_at
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
+ * @property-read int|null $advances_count
  */
 #[Fillable(['version', 'body_en', 'body_ar', 'published_at'])]
 class Disclosure extends Model
@@ -31,6 +33,16 @@ class Disclosure extends Model
     public static function current(): ?self
     {
         return static::query()->whereNotNull('published_at')->latest('published_at')->latest('id')->first();
+    }
+
+    /**
+     * Advances accepted under this version.
+     *
+     * @return HasMany<Advance, $this>
+     */
+    public function advances(): HasMany
+    {
+        return $this->hasMany(Advance::class);
     }
 
     public function bodyFor(string $locale): string

@@ -1,5 +1,12 @@
 import {
+    Building2,
+    FileText,
+    FlaskConical,
+    HandCoins,
+    Handshake,
+    History,
     House,
+    SlidersHorizontal,
     LayoutGrid,
     ReceiptText,
     Settings2,
@@ -57,6 +64,41 @@ export function navItemsFor(role: Role): NavItem[] {
                     title: tKey('Dashboard'),
                     href: admin.dashboard(),
                     icon: LayoutGrid,
+                },
+                {
+                    title: tKey('Advances'),
+                    href: admin.advances.index(),
+                    icon: HandCoins,
+                },
+                {
+                    title: tKey('Employers'),
+                    href: admin.employers.index(),
+                    icon: Building2,
+                },
+                {
+                    title: tKey('Partners'),
+                    href: admin.partners.index(),
+                    icon: Handshake,
+                },
+                {
+                    title: tKey('Program terms'),
+                    href: admin.terms.edit(),
+                    icon: SlidersHorizontal,
+                },
+                {
+                    title: tKey('Disclosures'),
+                    href: admin.disclosures.index(),
+                    icon: FileText,
+                },
+                {
+                    title: tKey('Audit log'),
+                    href: admin.auditLog.index(),
+                    icon: History,
+                },
+                {
+                    title: tKey('Simulation'),
+                    href: admin.simulation.show(),
+                    icon: FlaskConical,
                 },
             ];
         case 'partner_viewer':

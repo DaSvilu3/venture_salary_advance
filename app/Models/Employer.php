@@ -25,6 +25,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property CarbonImmutable|null $updated_at
  * @property-read Partner|null $bankPartner
  * @property-read Partner|null $funderPartner
+ * @property-read int|null $employees_count
+ * @property-read int|null $enrolled_count
+ * @property-read int|string|null $outstanding_baisa
+ * @property-read ProgramTerms|null $programTerms
  */
 #[Fillable(['name', 'cr_number', 'status', 'payday_day', 'bank_partner_id', 'funder_partner_id', 'subscription_plan'])]
 class Employer extends Model

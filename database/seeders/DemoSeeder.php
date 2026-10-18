@@ -8,6 +8,7 @@ use App\Enums\EnrolmentStatus;
 use App\Enums\LedgerEntryStatus;
 use App\Enums\LedgerEntryType;
 use App\Models\Advance;
+use App\Models\AuditLog;
 use App\Models\Disclosure;
 use App\Models\Employee;
 use App\Models\Employer;
@@ -197,6 +198,8 @@ class DemoSeeder extends Seeder
             'occurred_at' => $requestedAt->addMinutes(2),
         ]);
 
+        $this->auditTrail($advance, $requestedAt, $payday, $status);
+
         if ($status !== AdvanceStatus::Disbursed) {
             $advance->ledgerEntries()->create([
                 'type' => LedgerEntryType::Collection,
@@ -206,6 +209,39 @@ class DemoSeeder extends Seeder
                 'external_reference' => 'DD-DEMO'.$advance->id,
                 'failure_reason' => $collected ? null : 'Insufficient funds in the account.',
                 'occurred_at' => $payday->setTime(6, 5),
+            ]);
+        }
+    }
+
+    /**
+     * The status history the lifecycle would have recorded for a seeded advance.
+     */
+    private function auditTrail(Advance $advance, CarbonImmutable $requestedAt, CarbonImmutable $payday, AdvanceStatus $finalStatus): void
+    {
+        $steps = [
+            ['advance.requested', $requestedAt, ['amount_baisa' => $advance->amount_baisa->baisa]],
+            ['advance.approved', $requestedAt, ['from' => 'requested', 'by' => 'rules']],
+            ['advance.disbursing', $requestedAt->addMinute(), ['from' => 'approved']],
+            ['advance.disbursed', $requestedAt->addMinutes(2), ['from' => 'disbursing']],
+        ];
+
+        if ($finalStatus === AdvanceStatus::Collected) {
+            $steps[] = ['advance.collected', $payday->setTime(6, 5), ['from' => 'disbursed', 'attempt' => 1]];
+        }
+
+        if ($finalStatus === AdvanceStatus::Overdue) {
+            $steps[] = ['advance.collection_failed', $payday->setTime(6, 5), ['from' => 'disbursed', 'attempt' => 1]];
+            $steps[] = ['advance.collection_failed', $payday->addDays(2)->setTime(6, 5), ['from' => 'collection_failed', 'attempt' => 2]];
+            $steps[] = ['advance.overdue', $payday->addDays(4)->setTime(6, 5), ['from' => 'collection_failed', 'attempt' => 3]];
+        }
+
+        foreach ($steps as [$action, $at, $meta]) {
+            AuditLog::query()->create([
+                'action' => $action,
+                'subject_type' => $advance->getMorphClass(),
+                'subject_id' => $advance->id,
+                'meta' => $meta,
+                'created_at' => $at,
             ]);
         }
     }
