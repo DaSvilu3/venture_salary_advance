@@ -95,7 +95,7 @@ export default function Welcome() {
                 {/* Hero */}
                 <section className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-dawn px-4 pt-4 pb-16 sm:px-8 sm:pb-20">
                     <header className="flex items-center gap-3 rounded-full bg-white/90 py-2 ps-4 pe-2 shadow-sm backdrop-blur dark:bg-black/60">
-                        <span className="flex size-8 items-center justify-center rounded-xl bg-brand text-brand-foreground">
+                        <span className="flex size-8 items-center justify-center rounded-xl bg-white shadow-xs ring-1 ring-border dark:bg-white/10">
                             <AppLogoIcon className="size-5 fill-current" />
                         </span>
                         <span className="hidden font-semibold tracking-tight sm:inline">
@@ -302,7 +302,7 @@ export default function Welcome() {
 
                 <footer className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-6 py-8 text-xs text-muted-foreground sm:mt-6 sm:px-10">
                     <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                        <span className="flex size-6 items-center justify-center rounded-lg bg-brand text-brand-foreground">
+                        <span className="flex size-6 items-center justify-center rounded-lg bg-white shadow-xs ring-1 ring-border dark:bg-white/10">
                             <AppLogoIcon className="size-4 fill-current" />
                         </span>
                         {name}

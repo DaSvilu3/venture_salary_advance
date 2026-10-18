@@ -36,7 +36,7 @@ export default function EmployeeLayout({ children }: { children: ReactNode }) {
                         href={dashboard()}
                         className="flex items-center gap-2 font-semibold"
                     >
-                        <span className="flex size-8 items-center justify-center rounded-xl bg-brand text-brand-foreground">
+                        <span className="flex size-8 items-center justify-center rounded-xl bg-white shadow-xs ring-1 ring-border dark:bg-white/10">
                             <AppLogoIcon className="size-5 fill-current" />
                         </span>
                         <span className="truncate text-sm">{name}</span>
