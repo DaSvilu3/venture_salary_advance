@@ -13,23 +13,23 @@ export default function AuthSimpleLayout({
     const t = useT();
 
     return (
-        <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
+        <div className="relative flex min-h-svh flex-col items-center justify-center gap-6 bg-dawn-soft p-4 md:p-10">
             <LocaleSwitcher className="absolute end-4 top-4" />
-            <div className="w-full max-w-sm">
+            <div className="w-full max-w-md rounded-[2rem] bg-card p-6 shadow-xl shadow-brand/5 sm:p-10">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-4">
                         <Link
                             href={home()}
                             className="flex flex-col items-center gap-2 font-medium"
                         >
-                            <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
+                            <div className="mb-1 flex size-11 items-center justify-center rounded-2xl bg-brand text-brand-foreground">
+                                <AppLogoIcon className="size-7 fill-current" />
                             </div>
                             <span className="sr-only">{title && t(title)}</span>
                         </Link>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="text-xl font-medium">
+                            <h1 className="text-2xl font-semibold">
                                 {title && t(title)}
                             </h1>
                             <p className="text-center text-sm text-muted-foreground">

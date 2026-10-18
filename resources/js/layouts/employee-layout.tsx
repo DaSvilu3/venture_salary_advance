@@ -36,7 +36,7 @@ export default function EmployeeLayout({ children }: { children: ReactNode }) {
                         href={dashboard()}
                         className="flex items-center gap-2 font-semibold"
                     >
-                        <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                        <span className="flex size-8 items-center justify-center rounded-xl bg-brand text-brand-foreground">
                             <AppLogoIcon className="size-5 fill-current" />
                         </span>
                         <span className="truncate text-sm">{name}</span>
@@ -79,7 +79,7 @@ export default function EmployeeLayout({ children }: { children: ReactNode }) {
                                 className={cn(
                                     'flex flex-1 flex-col items-center gap-1 py-2 text-xs text-muted-foreground',
                                     isCurrentUrl(item.href) &&
-                                        'font-medium text-primary',
+                                        'font-semibold text-brand',
                                 )}
                             >
                                 {item.icon && <item.icon className="size-5" />}

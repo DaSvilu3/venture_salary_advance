@@ -9,7 +9,7 @@
 
 @theme {
     --font-sans:
-        'Instrument Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui,
+        'Plus Jakarta Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui,
         sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
@@ -59,49 +59,81 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-brand-soft: var(--brand-soft);
+    --color-brand-soft-foreground: var(--brand-soft-foreground);
+    --color-coral: var(--coral);
 }
 
 :root {
-    --series-1: #2a78d6;
-    --series-2: #eb6834;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
+    /*
+     * "Dawn" theme: near-black text and pill buttons on warm white, a violet
+     * brand accent with soft lavender surfaces, and a sea-to-rose dawn
+     * gradient for hero moments. Values were sampled from the competitor
+     * review (business/*.mp4) and adapted for an Omani, bank-partnered product.
+     */
+    --brand: #5a37f5;
+    --brand-foreground: #ffffff;
+    --brand-soft: #f3f1fe;
+    --brand-soft-foreground: #3a22b8;
+    --coral: #eb6b4e;
+    --dawn-sea: #10bcd2;
+    --dawn-lilac: #ae97ef;
+    --dawn-rose: #efc1ce;
+    --dawn-sand: #f6dcc4;
+
+    --series-1: #5a37f5;
+    --series-2: #eb6b4e;
+    --background: #f7f7f4;
+    --foreground: #0b0b10;
+    --card: #ffffff;
+    --card-foreground: #0b0b10;
+    --popover: #ffffff;
+    --popover-foreground: #0b0b10;
+    --primary: #0b0b10;
+    --primary-foreground: #ffffff;
+    --secondary: #f3f1fe;
+    --secondary-foreground: #2a1b8f;
+    --muted: #f1f0ec;
+    --muted-foreground: #66656f;
+    --accent: #f3f1fe;
+    --accent-foreground: #0b0b10;
     --destructive: oklch(0.577 0.245 27.325);
     --destructive-foreground: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
+    --border: #e8e7ee;
+    --input: #e2e1ea;
+    --ring: #b9aaf9;
+    --chart-1: #5a37f5;
+    --chart-2: #eb6b4e;
+    --chart-3: #10bcd2;
+    --chart-4: #ae97ef;
+    --chart-5: #0b0b10;
+    --radius: 1rem;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #0b0b10;
+    --sidebar-primary: #5a37f5;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f3f1fe;
+    --sidebar-accent-foreground: #2a1b8f;
+    --sidebar-border: #ecebf2;
+    --sidebar-ring: #b9aaf9;
 }
 
 .dark {
-    --series-1: #3987e5;
-    --series-2: #d95926;
+    --brand: #8b74ff;
+    --brand-foreground: #0b0b10;
+    --brand-soft: #241d45;
+    --brand-soft-foreground: #cfc5ff;
+    --coral: #e0603f;
+    --dawn-sea: #0b6f7c;
+    --dawn-lilac: #4b3d8a;
+    --dawn-rose: #6e3a52;
+    --dawn-sand: #5a4434;
+
+    --series-1: #8b74ff;
+    --series-2: #e0603f;
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.145 0 0);
@@ -136,6 +168,55 @@
     --sidebar-ring: oklch(0.439 0 0);
 }
 
+/* The dawn gradient: Arabian Sea teal to lilac, rose and desert sand. */
+@utility bg-dawn {
+    background-color: var(--dawn-lilac);
+    background-image:
+        radial-gradient(120% 90% at 0% 0%, var(--dawn-sea) 0%, transparent 55%),
+        radial-gradient(
+            90% 80% at 100% 15%,
+            var(--dawn-rose) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            80% 70% at 85% 100%,
+            var(--dawn-sand) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            90% 90% at 10% 100%,
+            var(--dawn-lilac) 0%,
+            transparent 70%
+        ),
+        linear-gradient(
+            160deg,
+            var(--dawn-sea),
+            var(--dawn-lilac) 55%,
+            var(--dawn-rose)
+        );
+}
+
+/* A paler wash of the same gradient, for page backgrounds behind white cards. */
+@utility bg-dawn-soft {
+    background-color: var(--background);
+    background-image:
+        radial-gradient(
+            70% 50% at 0% 0%,
+            color-mix(in oklab, var(--dawn-sea) 22%, transparent),
+            transparent
+        ),
+        radial-gradient(
+            60% 50% at 100% 0%,
+            color-mix(in oklab, var(--dawn-rose) 35%, transparent),
+            transparent
+        ),
+        radial-gradient(
+            70% 60% at 50% 110%,
+            color-mix(in oklab, var(--dawn-lilac) 25%, transparent),
+            transparent
+        );
+}
+
 @layer base {
     * {
         @apply border-border;
@@ -143,5 +224,17 @@
 
     body {
         @apply bg-background text-foreground;
+    }
+
+    h1,
+    h2,
+    h3 {
+        letter-spacing: -0.02em;
+    }
+
+    :lang(ar) h1,
+    :lang(ar) h2,
+    :lang(ar) h3 {
+        letter-spacing: 0;
     }
 }

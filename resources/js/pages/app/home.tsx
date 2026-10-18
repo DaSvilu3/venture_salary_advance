@@ -45,22 +45,31 @@ export default function Home({
                 </div>
 
                 <section
-                    className="overflow-hidden rounded-2xl bg-primary p-5 text-primary-foreground shadow-sm"
-                    style={
-                        bank?.brand_color
-                            ? {
-                                  backgroundColor: bank.brand_color,
-                                  color: '#fff',
-                              }
-                            : undefined
-                    }
+                    className="overflow-hidden rounded-3xl bg-dawn p-5 text-foreground shadow-sm"
                     aria-labelledby="available-heading"
                 >
-                    <p id="available-heading" className="text-sm opacity-80">
-                        {t('Available now')}
-                    </p>
+                    <div className="flex items-start justify-between gap-3">
+                        <p
+                            id="available-heading"
+                            className="text-sm text-foreground/70"
+                        >
+                            {t('Available now')}
+                        </p>
+                        {bank && (
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/75 px-2.5 py-1 text-xs font-medium backdrop-blur dark:bg-black/40">
+                                <span
+                                    className="size-2 rounded-full"
+                                    style={{
+                                        backgroundColor:
+                                            bank.brand_color ?? undefined,
+                                    }}
+                                />
+                                {bank.name}
+                            </span>
+                        )}
+                    </div>
                     <p
-                        className="mt-1 text-3xl font-semibold tabular-nums"
+                        className="mt-1 text-4xl font-semibold tracking-tight tabular-nums"
                         data-test="available-amount"
                     >
                         {money(
@@ -68,21 +77,21 @@ export default function Home({
                         )}
                     </p>
 
-                    <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-white/25">
+                    <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-white/50">
                         <div
-                            className="h-full rounded-full bg-white"
+                            className="h-full rounded-full bg-foreground"
                             style={{ width: `${usedPercent}%` }}
                         />
                     </div>
-                    <p className="mt-2 text-xs opacity-80">
+                    <p className="mt-2 text-xs text-foreground/70">
                         {t(':drawn used of your :limit limit this pay cycle', {
                             drawn: money(eligibility.drawn),
                             limit: money(eligibility.limit),
                         })}
                     </p>
 
-                    <div className="mt-4 flex items-center gap-2 text-xs opacity-90">
-                        <CalendarDays className="size-4" />
+                    <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-xs font-medium backdrop-blur dark:bg-black/30">
+                        <CalendarDays className="size-3.5" />
                         {t('Next payday :date', {
                             date: date(eligibility.payday),
                         })}
@@ -91,7 +100,7 @@ export default function Home({
                     {eligibility.eligible && (
                         <Button
                             asChild
-                            variant="secondary"
+                            size="lg"
                             className="mt-5 w-full"
                             data-test="request-advance-button"
                         >
