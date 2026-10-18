@@ -1,4 +1,4 @@
-# Salary-Linked Access — Product Brief
+# Zarf (ظرف) — Product Brief
 
 Extracted from `business/Product Evaluation One-Pagers (EN).pdf` (Portfolio Review, October 2026, Concept 02).
 An Arabic version of the same deck is at `business/Product Evaluation One-Pagers (AR).pdf`.
@@ -7,7 +7,7 @@ An Arabic version of the same deck is at `business/Product Evaluation One-Pagers
 > The review recommends building **only a clickable prototype** until a licensed bank and an approved funder have signed.
 > Settle the legal structure first.
 
-"Salary-Linked Access" is a working name.
+**Brand name: Zarf (ظرف)**, chosen October 2026. It means both "envelope" (the pay envelope) and "circumstance"; tagline "Ready for every situation." / «لكل ظرف.». The logo and the alternatives considered are in `docs/logo-concepts/`. The deck's working name was "Salary-Linked Access".
 
 ## What it is
 

@@ -1,4 +1,4 @@
-# Demo script: Salary-Linked Access
+# Demo script: Zarf (ظرف)
 
 A 10–15 minute walkthrough of every portal. It shows the full life of an advance: invitation, onboarding, HR approval, request, payout, payday collection and a failed collection. It ends with the bank's view of it all.
 

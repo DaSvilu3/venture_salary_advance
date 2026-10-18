@@ -1,4 +1,4 @@
-# Salary-Linked Access
+# Zarf (ظرف)
 
 A working prototype of a salary-linked liquidity platform for Oman. Employees take small advances against their verified salary. A licensed bank pays the advance out and collects it on payday by direct debit, and an approved funder holds the receivable.
 

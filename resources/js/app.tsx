@@ -7,7 +7,10 @@ import AuthLayout from '@/layouts/auth-layout';
 import EmployeeLayout from '@/layouts/employee-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName =
+    document.documentElement.lang === 'ar'
+        ? 'ظرف'
+        : import.meta.env.VITE_APP_NAME || 'Zarf';
 
 void createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),

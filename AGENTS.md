@@ -1,4 +1,4 @@
-# Salary-Linked Access
+# Zarf (ظرف)
 
 Salary-linked liquidity platform (B2B2C fintech, Oman). The full product context is in `docs/product-brief.md`, and the source decks are in `business/`.
 

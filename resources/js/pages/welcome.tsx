@@ -306,6 +306,9 @@ export default function Welcome() {
                             <AppLogoIcon className="size-4 fill-current" />
                         </span>
                         {name}
+                        <span className="font-normal text-muted-foreground">
+                            · {t('Ready for every situation.')}
+                        </span>
                     </div>
                     <p className="mt-3 max-w-3xl">
                         {t(

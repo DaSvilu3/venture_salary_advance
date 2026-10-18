@@ -299,6 +299,7 @@
     "Published :date": "نُشر :date",
     "Quick, and safe by design.": "سريعة، وآمنة بطبيعتها.",
     "Read-only. Export the filtered list for reconciliation.": "للاطلاع فقط. صدّر القائمة المصفّاة للمطابقة.",
+    "Ready for every situation.": "لكل ظرف.",
     "Real date: :date": "التاريخ الفعلي: :date",
     "Record": "السجل",
     "Reference": "المرجع",
@@ -431,5 +432,6 @@
     "Your salary has not been verified yet.": "لم يتم التحقق من راتبك بعد.",
     "Your salary, a little earlier.": "راتبك، قبل موعده بقليل.",
     "Your staff's enrolment and usage at a glance.": "نظرة سريعة على تسجيل موظفيك واستخدامهم.",
+    "Zarf": "ظرف",
     "the bank": "البنك"
 }
