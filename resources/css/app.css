@@ -9,8 +9,8 @@
 
 @theme {
     --font-sans:
-        'Plus Jakarta Sans', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui,
-        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Plus Jakarta Sans', 'Readex Pro', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
     --radius-lg: var(--radius);
@@ -236,5 +236,13 @@
     :lang(ar) h2,
     :lang(ar) h3 {
         letter-spacing: 0;
+    }
+
+    /* Arabic pages set everything in Readex Pro, Latin included, so mixed lines share one voice. */
+    :root:lang(ar) {
+        --font-sans:
+            'Readex Pro', 'Plus Jakarta Sans', ui-sans-serif, system-ui,
+            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+            'Segoe UI Symbol', 'Noto Color Emoji';
     }
 }

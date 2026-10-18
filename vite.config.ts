@@ -16,8 +16,8 @@ export default defineConfig({
                 bunny('Plus Jakarta Sans', {
                     weights: [400, 500, 600, 700],
                 }),
-                bunny('IBM Plex Sans Arabic', {
-                    weights: [400, 500, 600],
+                bunny('Readex Pro', {
+                    weights: [400, 500, 600, 700],
                 }),
             ],
         }),
