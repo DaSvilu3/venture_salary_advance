@@ -1,7 +1,15 @@
+export type Role =
+    | 'employee'
+    | 'employer_admin'
+    | 'platform_admin'
+    | 'partner_viewer';
+
 export type User = {
     id: number;
     name: string;
     email: string;
+    role: Role;
+    locale: 'en' | 'ar' | null;
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;

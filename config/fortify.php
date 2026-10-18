@@ -161,7 +161,7 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Public registration is disabled: employees and HR users join by invitation.
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([

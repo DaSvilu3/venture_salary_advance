@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +31,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => Role::Employee,
+            'locale' => null,
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
@@ -56,5 +59,37 @@ class UserFactory extends Factory
             'two_factor_recovery_codes' => encrypt(json_encode(['recovery-code-1'])),
             'two_factor_confirmed_at' => now(),
         ]);
+    }
+
+    /**
+     * Indicate that the user is an employee.
+     */
+    public function employee(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => Role::Employee]);
+    }
+
+    /**
+     * Indicate that the user is an employer HR administrator.
+     */
+    public function employerAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => Role::EmployerAdmin]);
+    }
+
+    /**
+     * Indicate that the user is a platform administrator.
+     */
+    public function platformAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => Role::PlatformAdmin]);
+    }
+
+    /**
+     * Indicate that the user is a read-only bank or funder viewer.
+     */
+    public function partnerViewer(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => Role::PartnerViewer]);
     }
 }

@@ -18,13 +18,13 @@ Worked example from the source: a salary of OMR 800 gives a limit of OMR 150, an
 
 ### Separation of roles
 
-| Party | Responsibility |
-|---|---|
-| **Platform (AWJ)** | Onboarding, employer verification, eligibility, disclosures. AWJ stays the technology provider only. |
-| **Licensed bank** | Moves the money: disbursement, settlement, direct-debit mandates. |
-| **Approved funder** | Provides capital and holds the receivable. |
-| **Employer / HR** | Verifies employment and salary; offers the product as a staff financial-wellness benefit. This is the distribution channel. |
-| **Employee** | Requests and receives advances; repays by direct debit. |
+| Party               | Responsibility                                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Platform (AWJ)**  | Onboarding, employer verification, eligibility, disclosures. AWJ stays the technology provider only.                        |
+| **Licensed bank**   | Moves the money: disbursement, settlement, direct-debit mandates.                                                           |
+| **Approved funder** | Provides capital and holds the receivable.                                                                                  |
+| **Employer / HR**   | Verifies employment and salary; offers the product as a staff financial-wellness benefit. This is the distribution channel. |
+| **Employee**        | Requests and receives advances; repays by direct debit.                                                                     |
 
 ### Existing rails to integrate with (Oman)
 
@@ -47,13 +47,14 @@ Worked example from the source: a salary of OMR 800 gives a limit of OMR 150, an
 
 ## Possible sales · Oman (OMR platform revenue per year, scenario estimates)
 
-| Scenario | Year-3 usage (average advance OMR 100) | Year 1 | Year 3 |
-|---|---|---|---|
-| Conservative | 15k enrolled · 25% use monthly · ≈45k advances a year | 0 | 90k |
-| Base | 60k enrolled · 30% use monthly · ≈216k advances a year | 15k | 540k |
-| Upside | 150k enrolled · 35% use monthly · ≈630k advances a year | 40k | 1.9M |
+| Scenario     | Year-3 usage (average advance OMR 100)                  | Year 1 | Year 3 |
+| ------------ | ------------------------------------------------------- | ------ | ------ |
+| Conservative | 15k enrolled · 25% use monthly · ≈45k advances a year   | 0      | 90k    |
+| Base         | 60k enrolled · 30% use monthly · ≈216k advances a year  | 15k    | 540k   |
+| Upside       | 150k enrolled · 35% use monthly · ≈630k advances a year | 40k    | 1.9M   |
 
 Assumptions:
+
 - Platform net take per advance is OMR 2 / 2.5 / 3, pending pricing rules.
 - Year-3 funds disbursed are about OMR 4.5M / 22M / 63M.
 - Capital outstanding is about OMR 0.4M / 1.8M / 5.3M on a one-month cycle.
@@ -75,16 +76,16 @@ Assumptions:
 
 ## Scorecard (1–5, 5 = best; regulatory: 5 = lowest risk)
 
-| Criterion | Weight | Score |
-|---|---|---|
-| Market need | 20% | 5 |
-| Revenue potential | 20% | 4 |
-| Speed to revenue | 15% | 2 |
-| Regulatory & legal risk | 15% | 2 |
-| Build feasibility (AWJ) | 10% | 4 |
-| Defensibility | 10% | 3 |
-| Strategic fit | 10% | 3 |
-| **Weighted** | | **3.4** |
+| Criterion               | Weight | Score   |
+| ----------------------- | ------ | ------- |
+| Market need             | 20%    | 5       |
+| Revenue potential       | 20%    | 4       |
+| Speed to revenue        | 15%    | 2       |
+| Regulatory & legal risk | 15%    | 2       |
+| Build feasibility (AWJ) | 10%    | 4       |
+| Defensibility           | 10%    | 3       |
+| Strategic fit           | 10%    | 3       |
+| **Weighted**            |        | **3.4** |
 
 ## Recommendation from the review
 
@@ -107,4 +108,4 @@ These notes come from development, not from the source deck.
 
 ## Missing source material
 
-The deck cites the *"Salary-Linked Financial Access Platform concept and regulatory framework"* (with NCSI and CBO references). That document is **not in this repo**. Add it to `business/` for the detailed flows, eligibility rules and regulatory notes.
+The deck cites the _"Salary-Linked Financial Access Platform concept and regulatory framework"_ (with NCSI and CBO references). That document is **not in this repo**. Add it to `business/` for the detailed flows, eligibility rules and regulatory notes.

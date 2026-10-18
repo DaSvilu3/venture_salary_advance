@@ -1,3 +1,4 @@
+import type { Locale } from '@/lib/i18n';
 import type { Auth } from '@/types/auth';
 
 declare module 'react' {
@@ -12,6 +13,13 @@ declare module '@inertiajs/core' {
             name: string;
             auth: Auth;
             sidebarOpen: boolean;
+            locale: Locale;
+            direction: 'ltr' | 'rtl';
+            translations: Record<string, string>;
+            clock: {
+                today: string;
+                isSimulated: boolean;
+            };
             [key: string]: unknown;
         };
     }

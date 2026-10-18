@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Clock;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -15,6 +17,8 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    public function __construct(private readonly Clock $clock) {}
 
     /**
      * Determines the current asset version.
@@ -35,13 +39,38 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $locale = app()->getLocale();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user(),
             ],
+            'locale' => $locale,
+            'direction' => $locale === 'ar' ? 'rtl' : 'ltr',
+            'translations' => Inertia::once(fn (): array => $this->translations($locale))->as("translations.{$locale}"),
+            'clock' => [
+                'today' => $this->clock->today()->toDateString(),
+                'isSimulated' => $this->clock->isSimulated(),
+            ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
+    }
+
+    /**
+     * The JSON translation strings for the given locale, keyed by their English source text.
+     *
+     * @return array<string, string>
+     */
+    private function translations(string $locale): array
+    {
+        $path = lang_path("{$locale}.json");
+
+        if (! is_file($path)) {
+            return [];
+        }
+
+        return json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
     }
 }
