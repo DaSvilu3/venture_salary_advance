@@ -19,17 +19,18 @@ To reset at any time, run `php artisan migrate:fresh --seed`. This also resets t
 
 All accounts use the password **`password`**.
 
-| Role | Email | Notes |
-|---|---|---|
-| Platform admin | `admin@demo.test` | Everything, plus the simulation console |
-| HR, Al Noor Trading LLC | `hr@alnoor.demo.test` | Payday on the 25th |
-| HR, Majan Logistics SAOC | `hr@majan.demo.test` | Payday on the 28th |
-| Bank viewer | `bank@demo.test` | Demo National Bank |
-| Funder viewer | `funder@demo.test` | Demo Capital Partners |
-| Employee (enrolled) | `salim@alnoor.demo.test` | OMR 800 salary, so an OMR 150 limit |
-| Employee (waiting for approval) | `aisha@alnoor.demo.test` | Onboarded; HR has not approved yet |
+| Role                            | Email                    | Notes                                   |
+| ------------------------------- | ------------------------ | --------------------------------------- |
+| Platform admin                  | `admin@demo.test`        | Everything, plus the simulation console |
+| HR, Al Noor Trading LLC         | `hr@alnoor.demo.test`    | Payday on the 25th                      |
+| HR, Majan Logistics SAOC        | `hr@majan.demo.test`     | Payday on the 28th                      |
+| Bank viewer                     | `bank@demo.test`         | Demo National Bank                      |
+| Funder viewer                   | `funder@demo.test`       | Demo Capital Partners                   |
+| Employee (enrolled)             | `salim@alnoor.demo.test` | OMR 800 salary, so an OMR 150 limit     |
+| Employee (waiting for approval) | `aisha@alnoor.demo.test` | Onboarded; HR has not approved yet      |
 
 **Invitation for a new employee:** Khalid Al Hinai has not created an account yet.
+
 - Link: `/invitation/demo-invite-khalid`
 - Last 4 digits of his civil ID: **8061**
 
@@ -41,17 +42,17 @@ Use a narrow browser window or the browser's device toolbar.
 
 1. Open `/invitation/demo-invite-khalid`. Khalid confirms the last 4 digits of his civil ID (**8061**) and chooses a password.
 2. **Get set up** has three steps:
-   - **IBAN:** enter `OM60 0180 0000 1234 5678 901`. Any valid Omani IBAN works; an invalid checksum is rejected.
-   - **Sign mandate:** the fake bank registers the direct-debit mandate, and payroll confirms his salary.
-   - **Approval:** Khalid now waits for HR.
+    - **IBAN:** enter `OM60 0180 0000 1234 5678 901`. Any valid Omani IBAN works; an invalid checksum is rejected.
+    - **Sign mandate:** the fake bank registers the direct-debit mandate, and payroll confirms his salary.
+    - **Approval:** Khalid now waits for HR.
 3. Log out and sign in as **Salim**.
 4. Point out the home screen:
-   - **OMR 150.000 available.** That's 18.75% of his OMR 800 salary, the example from the business case.
-   - The next payday date.
-   - The card in the bank partner's colour (the white-label idea).
+    - **OMR 150.000 available.** That's 18.75% of his OMR 800 salary, the example from the business case.
+    - The next payday date.
+    - The card in the bank partner's colour (the white-label idea).
 5. **Get an advance:**
-   - Pick OMR 75. The summary shows the fixed OMR 2.500 fee and the OMR 77.500 collected on payday.
-   - Accept the versioned terms and confirm.
+    - Pick OMR 75. The summary shows the fixed OMR 2.500 fee and the OMR 77.500 collected on payday.
+    - Accept the versioned terms and confirm.
 6. The advance page updates itself: **Approved → Sending to your bank → Paid out**.
 7. Switch to **العربية** (top bar). The whole interface flips to right-to-left Arabic.
 
@@ -74,13 +75,13 @@ Sign in as `admin@demo.test`.
 4. **Run now.** Salim's collection fails and is scheduled for a retry in two days. Every other due advance is collected.
 5. Click **+3 days**, then **Run now** again. The retry succeeds.
 6. Open **Advances**, then Salim's advance:
-   - the audit trail
-   - the bank transactions (one failed debit, one successful)
-   - the actions the lifecycle allows
+    - the audit trail
+    - the bank transactions (one failed debit, one successful)
+    - the actions the lifecycle allows
 7. To show **Program terms** and **Disclosures**: change the fee, or publish a new disclosure version. New advances must accept the new version; older advances keep the version they accepted.
 8. To show the white-label idea:
-   - **Partners →** edit Demo National Bank's brand colour.
-   - Sign in as Salim again; his home card now uses the new colour.
+    - **Partners →** edit Demo National Bank's brand colour.
+    - Sign in as Salim again; his home card now uses the new colour.
 
 Click **Back to today** in the simulation console when you finish.
 
@@ -89,10 +90,10 @@ Click **Back to today** in the simulation console when you finish.
 Sign in as `bank@demo.test`.
 
 1. **Dashboard:**
-   - the funded book
-   - overdue amounts by days past due
-   - exposure by employer
-   - payouts and collections by month (hover a month, or open the table view)
+    - the funded book
+    - overdue amounts by days past due
+    - exposure by employer
+    - payouts and collections by month (hover a month, or open the table view)
 2. **Advances → Export CSV** downloads the filtered list for reconciliation.
 
 The funder viewer (`funder@demo.test`) sees the same views, scoped to the advances it funds.

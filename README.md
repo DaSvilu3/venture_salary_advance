@@ -28,21 +28,21 @@ Demo accounts and a walkthrough are in [docs/demo-script.md](docs/demo-script.md
 
 ## Portals
 
-| Path | Who | What |
-|---|---|---|
-| `/app` | Employees | Mobile-first: onboarding (IBAN and mandate), available limit, request an advance, history |
-| `/employer` | HR administrators | Roster, CSV import, invitations, enrolment approval, totals-only dashboard |
-| `/admin` | Platform team | Employers, partners, program terms, disclosures, the advance book, audit log, simulation console |
-| `/partner` | Bank and funder viewers | Read-only book, ageing, exposure by employer, CSV export |
+| Path        | Who                     | What                                                                                             |
+| ----------- | ----------------------- | ------------------------------------------------------------------------------------------------ |
+| `/app`      | Employees               | Mobile-first: onboarding (IBAN and mandate), available limit, request an advance, history        |
+| `/employer` | HR administrators       | Roster, CSV import, invitations, enrolment approval, totals-only dashboard                       |
+| `/admin`    | Platform team           | Employers, partners, program terms, disclosures, the advance book, audit log, simulation console |
+| `/partner`  | Bank and funder viewers | Read-only book, ageing, exposure by employer, CSV export                                         |
 
 ## Where things live
 
 - **`app/Domain`** holds the business rules:
-  - eligibility and limits (`Eligibility/EligibilityService`)
-  - the advance lifecycle (`Advances/AdvanceLifecycle`)
-  - requesting an advance (`Advances/RequestAdvance`)
-  - pay cycles (`Payroll/PayCycleCalendar`)
-  - onboarding and the roster
+    - eligibility and limits (`Eligibility/EligibilityService`)
+    - the advance lifecycle (`Advances/AdvanceLifecycle`)
+    - requesting an advance (`Advances/RequestAdvance`)
+    - pay cycles (`Payroll/PayCycleCalendar`)
+    - onboarding and the roster
 - **`app/Contracts`** has the bank, funder and payroll gateways. **`app/Services/Fake`** has their demo drivers and forced-failure scenarios, and **`config/salary_access.php`** chooses the drivers.
 - **`app/Support/Money`** handles money as integer baisa (1 OMR = 1000 baisa). **`app/Support/Clock`** is the demo clock the simulation console moves.
 - **`lang/ar.json`** holds the Arabic strings. `tests/Feature/ArabicTranslationsTest.php` fails if a string in the interface has no translation.
