@@ -3,7 +3,7 @@
 Salary-linked liquidity platform (B2B2C fintech, Oman). The full product context is in `docs/product-brief.md`, and the source decks are in `business/`.
 
 - This is a **prototype** build, held at a regulatory gate. Never implement real money movement: bank, funder and mandate integrations go behind interfaces (`app/Contracts`) with fake drivers.
-- Store money as integer baisa (OMR has 3 decimal places), in columns suffixed `_baisa`. Keep fees, limit ratios and cycles configurable (`AdvancePolicy`).
+- Store money as integer baisa (OMR has 3 decimal places), in columns suffixed `_baisa`. Keep fees, limit ratios and cycles configurable (`ProgramTerms`, defaults in `config/salary_access.php`).
 - Build bilingual English and Arabic (RTL) from the start: every UI string goes through `lang/{en,ar}.json`, and layouts use Tailwind logical utilities (`ms-`, `pe-`, `start-`).
 - Read dates via `App\Support\Clock` (simulated "today" for demos), never `now()` directly in domain code.
 
