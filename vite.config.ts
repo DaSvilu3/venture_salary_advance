@@ -13,11 +13,10 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
             fonts: [
-                bunny('Plus Jakarta Sans', {
+                // Rubik covers both scripts; the Arabic subset must be requested explicitly.
+                bunny('Rubik', {
                     weights: [400, 500, 600, 700],
-                }),
-                bunny('Readex Pro', {
-                    weights: [400, 500, 600, 700],
+                    subsets: ['latin', 'arabic'],
                 }),
             ],
         }),
