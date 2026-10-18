@@ -108,6 +108,11 @@ export function navItemsFor(role: Role): NavItem[] {
                     href: partner.dashboard(),
                     icon: LayoutGrid,
                 },
+                {
+                    title: tKey('Advances'),
+                    href: partner.advances.index(),
+                    icon: HandCoins,
+                },
             ];
     }
 }

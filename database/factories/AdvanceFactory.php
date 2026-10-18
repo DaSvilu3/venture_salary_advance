@@ -2,13 +2,16 @@
 
 namespace Database\Factories;
 
+use App\Domain\Payroll\PayCycleCalendar;
 use App\Enums\AdvanceStatus;
 use App\Models\Advance;
 use App\Models\Disclosure;
 use App\Models\Employee;
+use App\Models\Employer;
 use App\Models\Mandate;
 use App\Models\PayCycle;
 use App\Support\Money;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +31,10 @@ class AdvanceFactory extends Factory
             'reference' => fake()->unique()->bothify('SLA-########'),
             'employee_id' => Employee::factory()->enrolled(),
             'employer_id' => fn (array $attributes) => Employee::query()->whereKey($attributes['employee_id'])->firstOrFail()->employer_id,
-            'pay_cycle_id' => fn (array $attributes) => PayCycle::factory()->create(['employer_id' => $attributes['employer_id']])->id,
+            'pay_cycle_id' => fn (array $attributes) => app(PayCycleCalendar::class)->cycleEndingOn(
+                Employer::query()->whereKey($attributes['employer_id'])->firstOrFail(),
+                CarbonImmutable::now()->addDays(10)->startOfDay(),
+            )->id,
             'mandate_id' => fn (array $attributes) => Mandate::query()->where('employee_id', $attributes['employee_id'])->value('id')
                 ?? Mandate::factory()->create(['employee_id' => $attributes['employee_id']])->id,
             'bank_partner_id' => fn (array $attributes) => Employee::query()->whereKey($attributes['employee_id'])->firstOrFail()->employer->bank_partner_id,

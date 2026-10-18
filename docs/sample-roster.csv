@@ -1,0 +1,6 @@
+staff_no,name,civil_id,email,phone,net_salary,employment_start_date
+AN-5001,Maryam Al Siyabi,11223344,maryam@alnoor.demo.test,+968 92000001,980,2021-03-01
+AN-5002,Talal Al Abri,22334455,talal@alnoor.demo.test,,640.250,2023-09-15
+AN-5003,Rahma Al Kindi,33445566,rahma@alnoor.demo.test,+968 92000003,1250,2019-11-20
+AN-5004,Missing Email,44556677,,,500,2022-01-01
+AN-1001,Duplicate Staff Number,55667788,dup@alnoor.demo.test,,700,2022-01-01
