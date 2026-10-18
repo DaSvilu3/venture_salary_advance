@@ -65,9 +65,21 @@ export default function Profile({ profile }: Props) {
                 <Row
                     label={t('Mandate')}
                     value={
-                        profile.mandate
-                            ? `${profile.mandate.reference}${profile.mandate.signed_at ? ` · ${date(profile.mandate.signed_at)}` : ''}`
-                            : t('Not signed')
+                        profile.mandate ? (
+                            <>
+                                <bdi>{profile.mandate.reference}</bdi>
+                                {profile.mandate.signed_at && (
+                                    <>
+                                        {' · '}
+                                        <bdi>
+                                            {date(profile.mandate.signed_at)}
+                                        </bdi>
+                                    </>
+                                )}
+                            </>
+                        ) : (
+                            t('Not signed')
+                        )
                     }
                 />
                 <Link

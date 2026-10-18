@@ -170,11 +170,8 @@ export default function Employees({ employees, filters, importResult }: Props) {
                                     >
                                         {employee.name}
                                     </Link>
-                                    <p
-                                        className="text-xs text-muted-foreground"
-                                        dir="ltr"
-                                    >
-                                        {employee.email}
+                                    <p className="text-xs text-muted-foreground">
+                                        <bdi>{employee.email}</bdi>
                                     </p>
                                 </TD>
                                 <TD className="tabular-nums">

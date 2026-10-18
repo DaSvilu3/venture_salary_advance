@@ -242,10 +242,7 @@ function SummaryRow({
     return (
         <div className="flex items-center justify-between gap-4">
             <dt className={cn(!strong && 'text-muted-foreground')}>{label}</dt>
-            <dd
-                className={cn('tabular-nums', strong && 'font-semibold')}
-                dir="ltr"
-            >
+            <dd className={cn('tabular-nums', strong && 'font-semibold')}>
                 {value}
             </dd>
         </div>
