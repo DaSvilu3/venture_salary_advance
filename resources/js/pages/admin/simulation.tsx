@@ -226,26 +226,30 @@ export default function Simulation({
                             <>
                                 <Field
                                     label={t('Employee')}
+                                    htmlFor="employee_id"
                                     error={errors.employee_id}
                                 >
-                                    <Select name="employee_id">
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue
-                                                placeholder={t('Choose…')}
-                                            />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {employees.map((employee) => (
-                                                <SelectItem
-                                                    key={employee.id}
-                                                    value={String(employee.id)}
-                                                >
-                                                    {employee.name} ·{' '}
-                                                    {employee.staff_no}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    {/* Native select: type-to-search over a long list, and its value always submits. */}
+                                    <select
+                                        id="employee_id"
+                                        name="employee_id"
+                                        defaultValue=""
+                                        required
+                                        className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+                                    >
+                                        <option value="" disabled>
+                                            {t('Choose…')}
+                                        </option>
+                                        {employees.map((employee) => (
+                                            <option
+                                                key={employee.id}
+                                                value={employee.id}
+                                            >
+                                                {employee.name} ·{' '}
+                                                {employee.staff_no}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </Field>
                                 <Field
                                     label={t('What fails')}
@@ -309,7 +313,7 @@ export default function Simulation({
                                         key={`${failure.operation}-${failure.employee_id}`}
                                     >
                                         {t(
-                                            ':operation for :name fails :count more times',
+                                            ':operation for :name · forced failures left: :count',
                                             {
                                                 operation: t(
                                                     operationLabels[

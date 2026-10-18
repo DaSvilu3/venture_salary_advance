@@ -20,7 +20,7 @@
     ":name can now use salary advances.": "يمكن لـ :name الآن استخدام سلف الراتب.",
     ":name was added and invited.": "تمت إضافة :name ودعوته.",
     ":name was created. Activate it when the contract is signed.": "تم إنشاء :name. فعّلها عند توقيع العقد.",
-    ":operation for :name fails :count more times": "تتعذّر :operation لـ :name :count مرات أخرى",
+    ":operation for :name · forced failures left: :count": ":operation لـ :name · حالات الفشل المتبقية: :count",
     ":percent% of net salary, up to :cap": ":percent% من صافي الراتب، بحد أقصى :cap",
     ":percent% up to OMR :cap · fee OMR :fee": ":percent% بحد أقصى :cap ر.ع. · الرسوم :fee ر.ع.",
     ":queued collections sent to the bank and :closed pay cycles closed.": "أُرسلت :queued عمليات تحصيل إلى البنك وأُغلقت :closed دورات رواتب.",
