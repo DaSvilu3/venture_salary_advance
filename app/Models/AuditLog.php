@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Clock;
 use Carbon\CarbonImmutable;
 use Database\Factories\AuditLogFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -40,7 +41,7 @@ class AuditLog extends Model
             'subject_type' => $subject?->getMorphClass(),
             'subject_id' => $subject?->getKey(),
             'meta' => $meta === [] ? null : $meta,
-            'created_at' => now(),
+            'created_at' => app(Clock::class)->now(),
         ]);
     }
 

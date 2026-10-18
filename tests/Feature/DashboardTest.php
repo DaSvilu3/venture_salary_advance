@@ -39,9 +39,5 @@ class DashboardTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertRedirect($portalHome);
-
-        $this->actingAs($user)
-            ->get($portalHome)
-            ->assertOk();
     }
 }

@@ -1,4 +1,4 @@
-import { LayoutGrid } from 'lucide-react';
+import { House, LayoutGrid, ReceiptText, UserRound } from 'lucide-react';
 import admin from '@/routes/admin';
 import app from '@/routes/app';
 import employer from '@/routes/employer';
@@ -14,7 +14,17 @@ export function navItemsFor(role: Role): NavItem[] {
     switch (role) {
         case 'employee':
             return [
-                { title: tKey('Home'), href: app.home(), icon: LayoutGrid },
+                { title: tKey('Home'), href: app.home(), icon: House },
+                {
+                    title: tKey('Advances'),
+                    href: app.advances.index(),
+                    icon: ReceiptText,
+                },
+                {
+                    title: tKey('Profile'),
+                    href: app.profile(),
+                    icon: UserRound,
+                },
             ];
         case 'employer_admin':
             return [

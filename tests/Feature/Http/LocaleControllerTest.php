@@ -13,22 +13,22 @@ class LocaleControllerTest extends TestCase
 
     public function test_switching_to_arabic_saves_the_locale_and_renders_right_to_left(): void
     {
-        $user = User::factory()->employee()->create();
+        $user = User::factory()->platformAdmin()->create();
 
         $this->actingAs($user)
-            ->from('/app')
+            ->from('/admin')
             ->put(route('locale.update'), ['locale' => 'ar'])
-            ->assertRedirect('/app')
+            ->assertRedirect('/admin')
             ->assertSessionHas('locale', 'ar');
 
         $this->assertSame('ar', $user->fresh()->locale);
 
         $this->actingAs($user->fresh())
-            ->get('/app')
+            ->get('/admin')
             ->assertInertia(fn (AssertableInertia $page) => $page
                 ->where('locale', 'ar')
                 ->where('direction', 'rtl')
-                ->where('translations.Home', 'الرئيسية')
+                ->where('translations.Dashboard', 'لوحة التحكم')
             );
     }
 

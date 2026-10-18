@@ -1,12 +1,20 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocaleController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
 
 Route::put('locale', LocaleController::class)->name('locale.update');
+
+Route::middleware('guest')->group(function () {
+    Route::get('invitation/{token}', [InvitationController::class, 'show'])->name('invitation.show');
+    Route::post('invitation/{token}', [InvitationController::class, 'store'])
+        ->middleware('throttle:6,1')
+        ->name('invitation.accept');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');

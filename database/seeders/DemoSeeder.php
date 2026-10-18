@@ -110,6 +110,7 @@ class DemoSeeder extends Seeder
             'name' => 'Khalid Al Hinai',
             'email' => 'khalid@alnoor.demo.test',
             'staff_no' => 'AN-1003',
+            'civil_id' => '10348061',
             'invitation_token' => 'demo-invite-khalid',
         ]);
 
