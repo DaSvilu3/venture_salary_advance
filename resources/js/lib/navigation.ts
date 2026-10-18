@@ -1,4 +1,11 @@
-import { House, LayoutGrid, ReceiptText, UserRound } from 'lucide-react';
+import {
+    House,
+    LayoutGrid,
+    ReceiptText,
+    Settings2,
+    UserRound,
+    Users,
+} from 'lucide-react';
 import admin from '@/routes/admin';
 import app from '@/routes/app';
 import employer from '@/routes/employer';
@@ -32,6 +39,16 @@ export function navItemsFor(role: Role): NavItem[] {
                     title: tKey('Dashboard'),
                     href: employer.dashboard(),
                     icon: LayoutGrid,
+                },
+                {
+                    title: tKey('Employees'),
+                    href: employer.employees.index(),
+                    icon: Users,
+                },
+                {
+                    title: tKey('Company settings'),
+                    href: employer.settings.edit(),
+                    icon: Settings2,
                 },
             ];
         case 'platform_admin':

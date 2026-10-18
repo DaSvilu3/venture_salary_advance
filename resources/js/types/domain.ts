@@ -68,3 +68,17 @@ export type Paginated<T> = {
         links: PaginationLink[];
     };
 };
+
+/** Laravel's plain LengthAwarePaginator serialisation (not wrapped in a resource). */
+export type LaravelPaginator<T> = {
+    data: T[];
+    current_page: number;
+    last_page: number;
+    from: number | null;
+    to: number | null;
+    total: number;
+    per_page: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    links: PaginationLink[];
+};

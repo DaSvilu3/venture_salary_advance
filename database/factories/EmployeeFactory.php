@@ -45,15 +45,23 @@ class EmployeeFactory extends Factory
     }
 
     /**
-     * Has accepted the invitation and is waiting for HR approval.
+     * Has finished onboarding (account, IBAN, mandate, payroll match) and is waiting for HR approval.
      */
     public function pendingApproval(): static
     {
-        return $this->withAccount()->state(fn (array $attributes) => [
-            'enrolment_status' => EnrolmentStatus::PendingApproval,
-            'iban' => fake()->numerify('OM##0##################'),
-            'invitation_token' => null,
-        ]);
+        return $this->withAccount()
+            ->state(fn (array $attributes) => [
+                'enrolment_status' => EnrolmentStatus::PendingApproval,
+                'salary_verified_at' => now(),
+                'iban' => fake()->numerify('OM##0##################'),
+                'invitation_token' => null,
+            ])
+            ->afterCreating(function (Employee $employee): void {
+                Mandate::factory()->for($employee)->create([
+                    'bank_partner_id' => $employee->employer->bank_partner_id,
+                    'status' => MandateStatus::Active,
+                ]);
+            });
     }
 
     /**
