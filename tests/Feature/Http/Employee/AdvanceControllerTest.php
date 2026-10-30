@@ -7,6 +7,7 @@ use App\Models\Advance;
 use App\Models\Disclosure;
 use App\Models\Employee;
 use App\Models\Employer;
+use App\Models\ProgramTerms;
 use App\Models\User;
 use App\Support\Money;
 use Carbon\CarbonImmutable;
@@ -51,6 +52,19 @@ class AdvanceControllerTest extends TestCase
                 ->component('app/advances/create')
                 ->where('disclosure.id', $disclosure->id)
                 ->where('disclosure.body', $disclosure->body_ar));
+    }
+
+    public function test_request_page_shows_the_funding_promise_for_the_employers_terms(): void
+    {
+        $employee = $this->enrolledEmployee();
+        Disclosure::factory()->create();
+        ProgramTerms::factory()->create(['employer_id' => $employee->employer_id, 'disbursement_sla_hours' => 12]);
+
+        $this->actingAs($employee->user)
+            ->get(route('app.advances.create'))
+            ->assertInertia(fn (AssertableInertia $page) => $page
+                ->component('app/advances/create')
+                ->where('sla_hours', 12));
     }
 
     public function test_confirming_an_advance_pays_it_out_and_opens_its_page(): void

@@ -5,11 +5,14 @@ use App\Http\Controllers\Admin\AdvanceController;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DisclosureController;
+use App\Http\Controllers\Admin\EmployerAgreementController;
 use App\Http\Controllers\Admin\EmployerController;
+use App\Http\Controllers\Admin\EmployerDocumentController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\ProgramTermsController;
 use App\Http\Controllers\Admin\SimulationController;
 use App\Http\Controllers\Admin\StaffInvitationController;
+use App\Http\Controllers\Admin\WorkflowController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', DashboardController::class)->name('dashboard');
@@ -18,6 +21,11 @@ Route::get('employers', [EmployerController::class, 'index'])->name('employers.i
 Route::post('employers', [EmployerController::class, 'store'])->name('employers.store');
 Route::get('employers/{employer}', [EmployerController::class, 'show'])->name('employers.show');
 Route::put('employers/{employer}', [EmployerController::class, 'update'])->name('employers.update');
+Route::get('employers/{employer}/documents/{document}/download', [EmployerDocumentController::class, 'download'])->whereNumber('document')->name('employers.documents.download');
+Route::post('employers/{employer}/documents/{document}/approve', [EmployerDocumentController::class, 'approve'])->whereNumber('document')->name('employers.documents.approve');
+Route::post('employers/{employer}/documents/{document}/reject', [EmployerDocumentController::class, 'reject'])->whereNumber('document')->name('employers.documents.reject');
+Route::get('employers/{employer}/agreement', [EmployerAgreementController::class, 'show'])->name('employers.agreement.show');
+Route::get('employers/{employer}/agreement/signed', [EmployerAgreementController::class, 'downloadSigned'])->name('employers.agreement.signed.download');
 Route::post('employers/{employer}/admins', [StaffInvitationController::class, 'storeEmployerAdmin'])->name('employers.admins.store');
 Route::put('employers/{employer}/terms', [ProgramTermsController::class, 'updateForEmployer'])->name('employers.terms.update');
 Route::delete('employers/{employer}/terms', [ProgramTermsController::class, 'destroyForEmployer'])->name('employers.terms.destroy');
@@ -30,12 +38,16 @@ Route::post('partners/{partner}/viewers', [StaffInvitationController::class, 'st
 Route::get('terms', [ProgramTermsController::class, 'edit'])->name('terms.edit');
 Route::put('terms', [ProgramTermsController::class, 'update'])->name('terms.update');
 
+Route::get('workflow', WorkflowController::class)->name('workflow.show');
+
 Route::get('disclosures', [DisclosureController::class, 'index'])->name('disclosures.index');
 Route::post('disclosures', [DisclosureController::class, 'store'])->name('disclosures.store');
 Route::post('disclosures/{disclosure}/publish', [DisclosureController::class, 'publish'])->name('disclosures.publish');
 
 Route::get('advances', [AdvanceController::class, 'index'])->name('advances.index');
 Route::get('advances/{advance:reference}', [AdvanceController::class, 'show'])->name('advances.show');
+Route::get('advances/{advance:reference}/ticket', [AdvanceController::class, 'ticket'])->name('advances.ticket');
+Route::post('advances/{advance:reference}/approve', [AdvanceActionController::class, 'approve'])->name('advances.approve');
 Route::post('advances/{advance:reference}/cancel', [AdvanceActionController::class, 'cancel'])->name('advances.cancel');
 Route::post('advances/{advance:reference}/write-off', [AdvanceActionController::class, 'writeOff'])->name('advances.write-off');
 Route::post('advances/{advance:reference}/collect', [AdvanceActionController::class, 'retryCollection'])->name('advances.collect');

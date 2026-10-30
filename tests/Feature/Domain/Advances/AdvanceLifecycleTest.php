@@ -48,4 +48,20 @@ class AdvanceLifecycleTest extends TestCase
             $this->assertSame(0, $advance->auditLogs()->count());
         }
     }
+
+    public function test_transition_honours_the_current_row_not_a_stale_copy(): void
+    {
+        $advance = Advance::factory()->inStatus(AdvanceStatus::Approved)->create();
+
+        // Another worker has already moved the advance on while we held a stale copy.
+        Advance::query()->whereKey($advance->getKey())->update(['status' => AdvanceStatus::Cancelled->value]);
+
+        try {
+            app(AdvanceLifecycle::class)->transition($advance, AdvanceStatus::Disbursing);
+            $this->fail('Expected the stale transition to be rejected.');
+        } catch (InvalidAdvanceTransition) {
+            $this->assertSame(AdvanceStatus::Cancelled, $advance->fresh()->status);
+            $this->assertSame(0, $advance->auditLogs()->count());
+        }
+    }
 }

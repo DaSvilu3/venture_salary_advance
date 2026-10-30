@@ -4,6 +4,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Programme agreement version
+    |--------------------------------------------------------------------------
+    |
+    | The version of the salary advance programme agreement employers accept.
+    |
+    */
+
+    'agreement_version' => '2026.1',
+
+    /*
+    |--------------------------------------------------------------------------
     | Default program terms
     |--------------------------------------------------------------------------
     |
@@ -22,21 +33,11 @@ return [
         'min_tenure_months' => 3,
         'cutoff_days_before_payday' => 3,
         'max_draws_per_cycle' => 3,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Collections
-    |--------------------------------------------------------------------------
-    |
-    | How many times a direct debit is attempted, and how many days apart,
-    | before an advance is marked overdue.
-    |
-    */
-
-    'collections' => [
-        'max_attempts' => 3,
-        'retry_after_days' => 2,
+        'collection_max_attempts' => 3,
+        'collection_retry_days' => 2,
+        'collection_offset_days' => 0,
+        'disbursement_sla_hours' => 24,
+        'auto_approve' => true,
     ],
 
     /*

@@ -14,5 +14,11 @@ interface FunderGateway
 
     public function fund(Advance $advance): GatewayResult;
 
+    /**
+     * Reverse funding already provided for an advance, e.g. when the bank transfer fails after the
+     * funder has released the capital, so the receivable is not left orphaned.
+     */
+    public function reverseFunding(Advance $advance): GatewayResult;
+
     public function reportRepayment(Advance $advance): GatewayResult;
 }

@@ -6,6 +6,7 @@ use App\Enums\AdvanceStatus;
 use App\Enums\LedgerEntryStatus;
 use App\Jobs\CollectAdvance;
 use App\Models\Advance;
+use App\Models\ProgramTerms;
 use App\Services\Fake\FakeScenarios;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -42,6 +43,17 @@ class CollectAdvanceTest extends TestCase
         $this->assertSame(LedgerEntryStatus::Failed, $advance->ledgerEntries()->sole()->status);
     }
 
+    public function test_employer_attempt_limit_decides_when_a_failed_advance_becomes_overdue(): void
+    {
+        $advance = Advance::factory()->inStatus(AdvanceStatus::Disbursed)->create();
+        ProgramTerms::factory()->create(['employer_id' => $advance->employer_id, 'collection_max_attempts' => 1]);
+        app(FakeScenarios::class)->failNext(FakeScenarios::COLLECTION, $advance->employee);
+
+        CollectAdvance::dispatchSync($advance->id);
+
+        $this->assertSame(AdvanceStatus::Overdue, $advance->fresh()->status);
+    }
+
     public function test_advance_becomes_overdue_when_the_last_attempt_fails(): void
     {
         $advance = Advance::factory()->inStatus(AdvanceStatus::CollectionFailed)->create(['collection_attempts' => 2]);
@@ -74,6 +86,21 @@ class CollectAdvanceTest extends TestCase
         $advance->refresh();
         $this->assertSame(AdvanceStatus::Overdue, $advance->status);
         $this->assertSame(4, $advance->collection_attempts);
+        // The failed retry is recorded rather than changing the account silently.
+        $this->assertDatabaseHas('audit_logs', ['action' => 'advance.collection_failed', 'subject_id' => $advance->id]);
+    }
+
+    public function test_a_second_collection_does_not_debit_an_already_collected_advance(): void
+    {
+        $advance = Advance::factory()->create();
+
+        CollectAdvance::dispatchSync($advance->id);
+        $this->assertSame(AdvanceStatus::Collected, $advance->fresh()->status);
+
+        // A duplicate run (double schedule, repeated retry, or a second worker) must not debit again.
+        CollectAdvance::dispatchSync($advance->id);
+
+        $this->assertSame(1, $advance->ledgerEntries()->count());
     }
 
     public function test_does_not_collect_an_advance_that_was_never_paid_out(): void

@@ -14,6 +14,11 @@ export type TermsValues = {
     min_tenure_months: number;
     cutoff_days_before_payday: number;
     max_draws_per_cycle: number;
+    collection_max_attempts: number;
+    collection_retry_days: number;
+    collection_offset_days: number;
+    disbursement_sla_hours: number;
+    auto_approve: '1' | '0';
 };
 
 const FIELDS: {
@@ -53,6 +58,26 @@ const FIELDS: {
     {
         name: 'max_draws_per_cycle',
         label: tKey('Advances per pay cycle'),
+        step: '1',
+    },
+    {
+        name: 'collection_max_attempts',
+        label: tKey('Collection attempts before overdue'),
+        step: '1',
+    },
+    {
+        name: 'collection_retry_days',
+        label: tKey('Days between collection retries'),
+        step: '1',
+    },
+    {
+        name: 'collection_offset_days',
+        label: tKey('Days after payday before collection'),
+        step: '1',
+    },
+    {
+        name: 'disbursement_sla_hours',
+        label: tKey('Funding promise (hours)'),
         step: '1',
     },
 ];
@@ -96,6 +121,25 @@ export function TermsForm({
                             />
                         </Field>
                     ))}
+                    <Field
+                        label={t('Advance approval')}
+                        htmlFor="auto_approve"
+                        error={errors.auto_approve}
+                    >
+                        <select
+                            id="auto_approve"
+                            name="auto_approve"
+                            defaultValue={values.auto_approve}
+                            className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+                        >
+                            <option value="1">
+                                {t('Approve automatically')}
+                            </option>
+                            <option value="0">
+                                {t('Admin approves each advance')}
+                            </option>
+                        </select>
+                    </Field>
                     <div className="sm:col-span-2">
                         <Button type="submit" disabled={processing}>
                             {processing && <Spinner />}

@@ -10,6 +10,7 @@ use App\Http\Resources\AdvanceResource;
 use App\Models\AuditLog;
 use App\Models\Disclosure;
 use App\Models\LedgerEntry;
+use App\Models\ProgramTerms;
 use App\Support\Money;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -49,6 +50,7 @@ class AdvanceController extends EmployeePortalController
             ],
             'bank' => $employee->employer->bankPartner?->name,
             'iban' => $employee->iban,
+            'sla_hours' => ProgramTerms::forEmployer($employee->employer)->disbursement_sla_hours,
         ]);
     }
 

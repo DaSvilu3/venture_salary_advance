@@ -8,7 +8,7 @@ import { useT } from '@/lib/i18n';
 import { useMoney } from '@/lib/money';
 import { cn } from '@/lib/utils';
 import { index } from '@/routes/app/advances';
-import type { Advance } from '@/types';
+import type { Advance, AdvanceStatus } from '@/types';
 
 type Props = {
     advance: Advance;
@@ -26,11 +26,34 @@ type Props = {
 
 const PAYOUT_IN_FLIGHT = ['requested', 'approved', 'disbursing'];
 
+/**
+ * Index of the furthest key stage (Requested, Approved, Paid out, Repaid) each
+ * status has reached. Rejected and cancelled advances have no stage to show.
+ */
+const STAGE_REACHED: Partial<Record<AdvanceStatus, number>> = {
+    requested: 0,
+    approved: 1,
+    disbursing: 1,
+    disbursement_failed: 1,
+    disbursed: 2,
+    collection_failed: 3,
+    overdue: 3,
+    written_off: 3,
+    collected: 3,
+};
+
 export default function ShowAdvance({ advance, timeline }: Props) {
     const t = useT();
     const money = useMoney();
     const { date, dateTime } = useDates();
     const payoutInFlight = PAYOUT_IN_FLIGHT.includes(advance.status);
+    const stageReached = STAGE_REACHED[advance.status];
+    const progressStages = [
+        t('Requested'),
+        t('Approved'),
+        t('Paid out'),
+        t('Repaid'),
+    ];
 
     useEffect(() => {
         if (!payoutInFlight) {
@@ -115,6 +138,55 @@ export default function ShowAdvance({ advance, timeline }: Props) {
                         </p>
                     )}
             </section>
+
+            {stageReached !== undefined && (
+                <section className="mt-6">
+                    <h2 className="mb-3 text-sm font-medium text-muted-foreground">
+                        {t('Progress')}
+                    </h2>
+                    <ol className="grid grid-cols-4 gap-2">
+                        {progressStages.map((stage, index) => {
+                            const isComplete =
+                                index < stageReached ||
+                                (advance.status === 'collected' &&
+                                    index === stageReached);
+                            const isCurrent =
+                                index === stageReached && !isComplete;
+
+                            return (
+                                <li
+                                    key={stage}
+                                    aria-current={
+                                        isCurrent ? 'step' : undefined
+                                    }
+                                    className="space-y-1.5"
+                                >
+                                    <span
+                                        className={cn(
+                                            'block h-1.5 rounded-full',
+                                            isComplete || isCurrent
+                                                ? 'bg-primary'
+                                                : 'bg-muted',
+                                        )}
+                                    />
+                                    <span
+                                        className={cn(
+                                            'block text-xs',
+                                            isCurrent
+                                                ? 'font-semibold text-foreground'
+                                                : isComplete
+                                                  ? 'text-foreground'
+                                                  : 'text-muted-foreground',
+                                        )}
+                                    >
+                                        {stage}
+                                    </span>
+                                </li>
+                            );
+                        })}
+                    </ol>
+                </section>
+            )}
 
             <section className="mt-6">
                 <h2 className="mb-3 text-sm font-medium text-muted-foreground">

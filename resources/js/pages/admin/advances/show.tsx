@@ -1,5 +1,12 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Ban, FileX, RefreshCw } from 'lucide-react';
+import {
+    ArrowLeft,
+    Ban,
+    CheckCircle2,
+    FileText,
+    FileX,
+    RefreshCw,
+} from 'lucide-react';
 import { AdvanceStatusBadge } from '@/components/advances/advance-status-badge';
 import InputError from '@/components/input-error';
 import { PageHeader } from '@/components/portal/page-header';
@@ -8,7 +15,14 @@ import { Button } from '@/components/ui/button';
 import { useDates } from '@/lib/format';
 import { tKey, useT } from '@/lib/i18n';
 import { useMoney } from '@/lib/money';
-import { cancel, collect, index, writeOff } from '@/routes/admin/advances';
+import {
+    approve,
+    cancel,
+    collect,
+    index,
+    ticket,
+    writeOff,
+} from '@/routes/admin/advances';
 import type { Advance } from '@/types';
 
 type Props = {
@@ -19,6 +33,7 @@ type Props = {
         mandate_reference: string | null;
     };
     allowedActions: {
+        approve: boolean;
         cancel: boolean;
         retry_collection: boolean;
         write_off: boolean;
@@ -99,6 +114,32 @@ export default function ShowAdvance({
                 />
 
                 <div className="flex flex-wrap gap-2">
+                    <Button asChild variant="default">
+                        <Link href={ticket(advance.reference)}>
+                            <FileText />
+                            {t('CBO record')}
+                        </Link>
+                    </Button>
+                    {allowedActions.approve && (
+                        <Form
+                            {...approve.form(advance.reference)}
+                            options={{ preserveScroll: true }}
+                        >
+                            {({ processing, errors }) => (
+                                <>
+                                    <Button
+                                        type="submit"
+                                        variant="default"
+                                        disabled={processing}
+                                    >
+                                        <CheckCircle2 />
+                                        {t('Approve advance')}
+                                    </Button>
+                                    <InputError message={errors.advance} />
+                                </>
+                            )}
+                        </Form>
+                    )}
                     {allowedActions.retry_collection && (
                         <Form
                             {...collect.form(advance.reference)}

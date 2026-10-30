@@ -7,6 +7,7 @@ use App\Models\Advance;
 use App\Models\AuditLog;
 use App\Models\User;
 use App\Support\Clock;
+use Illuminate\Support\Facades\DB;
 
 /**
  * The only place an advance's status changes. Every move is checked against the allowed transitions
@@ -29,32 +30,42 @@ class AdvanceLifecycle
         array $attributes = [],
         array $meta = [],
     ): Advance {
-        $from = $advance->status;
+        return DB::transaction(function () use ($advance, $to, $actor, $attributes, $meta): Advance {
+            // Lock the row and adopt its authoritative state, so two workers cannot each act on a
+            // stale status and overwrite one another (a lost-update race on the status column).
+            $locked = Advance::query()->whereKey($advance->getKey())->lockForUpdate()->first();
 
-        if (! $from->canTransitionTo($to)) {
-            throw InvalidAdvanceTransition::between($advance, $to);
-        }
+            if ($locked !== null) {
+                $advance->setRawAttributes($locked->getAttributes(), sync: true);
+            }
 
-        $advance->fill($attributes);
-        $advance->status = $to;
+            $from = $advance->status;
 
-        match ($to) {
-            AdvanceStatus::Disbursed => $advance->disbursed_at = $this->clock->now(),
-            AdvanceStatus::Collected => $advance->forceFill([
-                'collected_at' => $this->clock->now(),
-                'next_collection_attempt_on' => null,
-            ]),
-            AdvanceStatus::Overdue, AdvanceStatus::WrittenOff => $advance->next_collection_attempt_on = null,
-            default => null,
-        };
+            if (! $from->canTransitionTo($to)) {
+                throw InvalidAdvanceTransition::between($advance, $to);
+            }
 
-        $advance->save();
+            $advance->fill($attributes);
+            $advance->status = $to;
 
-        AuditLog::record("advance.{$to->value}", $advance, $actor, [
-            'from' => $from->value,
-            ...$meta,
-        ]);
+            match ($to) {
+                AdvanceStatus::Disbursed => $advance->disbursed_at = $this->clock->now(),
+                AdvanceStatus::Collected => $advance->forceFill([
+                    'collected_at' => $this->clock->now(),
+                    'next_collection_attempt_on' => null,
+                ]),
+                AdvanceStatus::Overdue, AdvanceStatus::WrittenOff => $advance->next_collection_attempt_on = null,
+                default => null,
+            };
 
-        return $advance;
+            $advance->save();
+
+            AuditLog::record("advance.{$to->value}", $advance, $actor, [
+                'from' => $from->value,
+                ...$meta,
+            ]);
+
+            return $advance;
+        });
     }
 }

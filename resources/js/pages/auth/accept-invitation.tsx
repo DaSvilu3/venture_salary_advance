@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { BadgeCheck } from 'lucide-react';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
@@ -29,16 +30,21 @@ export default function AcceptInvitation({
         <>
             <Head title={t('Accept your invitation')} />
 
-            <div className="mb-2 rounded-lg border bg-muted/50 p-4 text-sm">
-                <p>
-                    {t(':employer has invited you to salary advances.', {
-                        employer,
-                    })}
-                </p>
-                <p className="mt-1 font-medium">{name}</p>
-                <p className="text-muted-foreground" dir="ltr">
-                    {email}
-                </p>
+            <div className="mb-2 flex items-start gap-3 rounded-2xl bg-brand-soft/60 p-4 text-sm">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-card text-brand shadow-sm ring-1 ring-border/60">
+                    <BadgeCheck className="size-4" />
+                </span>
+                <div>
+                    <p>
+                        {t(':employer has invited you to salary advances.', {
+                            employer,
+                        })}
+                    </p>
+                    <p className="mt-1 font-medium">{name}</p>
+                    <p className="text-muted-foreground" dir="ltr">
+                        {email}
+                    </p>
+                </div>
             </div>
 
             <Form

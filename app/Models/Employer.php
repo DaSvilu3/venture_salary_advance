@@ -92,6 +92,26 @@ class Employer extends Model
     }
 
     /**
+     * Company documents uploaded for platform review.
+     *
+     * @return HasMany<EmployerDocument, $this>
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(EmployerDocument::class);
+    }
+
+    /**
+     * The salary advance programme agreement the employer accepts or rejects.
+     *
+     * @return HasOne<EmployerAgreement, $this>
+     */
+    public function agreement(): HasOne
+    {
+        return $this->hasOne(EmployerAgreement::class);
+    }
+
+    /**
      * Program terms that override the platform defaults for this employer.
      *
      * @return HasOne<ProgramTerms, $this>

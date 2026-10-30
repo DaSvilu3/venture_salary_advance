@@ -27,13 +27,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $min_tenure_months
  * @property int $cutoff_days_before_payday
  * @property int $max_draws_per_cycle
+ * @property int $collection_max_attempts
+ * @property int $collection_retry_days
+ * @property int $collection_offset_days
+ * @property int $disbursement_sla_hours
+ * @property bool $auto_approve
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  */
 #[Table('program_terms')]
 #[Fillable([
     'employer_id', 'limit_ratio_bps', 'max_limit_baisa', 'min_advance_baisa', 'fee_model', 'flat_fee_baisa',
-    'min_tenure_months', 'cutoff_days_before_payday', 'max_draws_per_cycle',
+    'min_tenure_months', 'cutoff_days_before_payday', 'max_draws_per_cycle', 'collection_max_attempts',
+    'collection_retry_days', 'collection_offset_days', 'disbursement_sla_hours', 'auto_approve',
 ])]
 class ProgramTerms extends Model
 {
@@ -77,6 +83,11 @@ class ProgramTerms extends Model
             'min_tenure_months' => 'integer',
             'cutoff_days_before_payday' => 'integer',
             'max_draws_per_cycle' => 'integer',
+            'collection_max_attempts' => 'integer',
+            'collection_retry_days' => 'integer',
+            'collection_offset_days' => 'integer',
+            'disbursement_sla_hours' => 'integer',
+            'auto_approve' => 'boolean',
         ];
     }
 }

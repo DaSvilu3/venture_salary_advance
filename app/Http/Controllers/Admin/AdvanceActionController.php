@@ -7,6 +7,7 @@ use App\Domain\Advances\InvalidAdvanceTransition;
 use App\Enums\AdvanceStatus;
 use App\Http\Controllers\Controller;
 use App\Jobs\CollectAdvance;
+use App\Jobs\DisburseAdvance;
 use App\Models\Advance;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,21 @@ use Inertia\Inertia;
  */
 class AdvanceActionController extends Controller
 {
+    public function approve(Request $request, Advance $advance, AdvanceLifecycle $lifecycle): RedirectResponse
+    {
+        if ($advance->status !== AdvanceStatus::Requested) {
+            throw ValidationException::withMessages(['advance' => __('Only advances awaiting approval can be approved.')]);
+        }
+
+        $lifecycle->transition($advance, AdvanceStatus::Approved, $request->user(), meta: ['by' => 'admin']);
+
+        DisburseAdvance::dispatch($advance->id);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Advance approved.')]);
+
+        return back();
+    }
+
     public function cancel(Request $request, Advance $advance, AdvanceLifecycle $lifecycle): RedirectResponse
     {
         $this->transition($request, $advance, $lifecycle, AdvanceStatus::Cancelled);

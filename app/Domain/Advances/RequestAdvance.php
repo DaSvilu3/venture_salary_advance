@@ -10,6 +10,7 @@ use App\Models\Advance;
 use App\Models\AuditLog;
 use App\Models\Disclosure;
 use App\Models\Employee;
+use App\Models\ProgramTerms;
 use App\Models\User;
 use App\Support\Clock;
 use App\Support\Money;
@@ -83,10 +84,16 @@ class RequestAdvance
                 'disclosure_version' => $acceptedDisclosure->version,
             ]);
 
+            if (! ProgramTerms::forEmployer($employee->employer)->auto_approve) {
+                return $advance;
+            }
+
             return $this->lifecycle->transition($advance, AdvanceStatus::Approved, meta: ['by' => 'rules']);
         });
 
-        DisburseAdvance::dispatch($advance->id);
+        if ($advance->status === AdvanceStatus::Approved) {
+            DisburseAdvance::dispatch($advance->id);
+        }
 
         return $advance;
     }

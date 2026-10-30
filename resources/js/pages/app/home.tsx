@@ -123,6 +123,60 @@ export default function Home({
                     </section>
                 )}
 
+                <section
+                    className="space-y-4 rounded-xl border bg-card p-4"
+                    aria-labelledby="how-it-works-heading"
+                >
+                    <h2
+                        id="how-it-works-heading"
+                        className="text-sm font-medium text-muted-foreground"
+                    >
+                        {t('How it works')}
+                    </h2>
+                    <ol className="space-y-4">
+                        {[
+                            {
+                                title: t('Check your available amount'),
+                                body: t(
+                                    'Set from your verified salary, with a clear fixed fee.',
+                                ),
+                            },
+                            {
+                                title: t('Request in three steps'),
+                                body: t(
+                                    'Choose an amount, review the fee, and confirm.',
+                                ),
+                            },
+                            {
+                                title: t('Money to your account'),
+                                body: t(
+                                    'Paid into your own bank account, usually within a day.',
+                                ),
+                            },
+                            {
+                                title: t('Repaid on payday'),
+                                body: t(
+                                    'Collected automatically from your account by direct debit.',
+                                ),
+                            },
+                        ].map((step, index) => (
+                            <li key={step.title} className="flex gap-3">
+                                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-semibold text-brand-soft-foreground tabular-nums">
+                                    {index + 1}
+                                </span>
+                                <div className="min-w-0">
+                                    <p className="text-sm font-medium">
+                                        {step.title}
+                                    </p>
+                                    <p className="mt-0.5 text-xs text-muted-foreground">
+                                        {step.body}
+                                    </p>
+                                </div>
+                            </li>
+                        ))}
+                    </ol>
+                </section>
+
                 <section className="space-y-3">
                     <h2 className="text-sm font-medium text-muted-foreground">
                         {t('In progress')}

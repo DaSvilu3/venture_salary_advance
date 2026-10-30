@@ -1,12 +1,13 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
+    ArrowRight,
     BadgeCheck,
     Building2,
-    CalendarCheck,
     CheckCircle2,
     Landmark,
     Languages,
     ShieldCheck,
+    Users,
     Wallet,
 } from 'lucide-react';
 import AppLogoIcon from '@/components/app-logo-icon';
@@ -74,12 +75,31 @@ const STEPS = [
     },
 ];
 
-const TRUST = [
-    { icon: ShieldCheck, label: tKey('Licensed bank and funder partners') },
-    { icon: CalendarCheck, label: tKey('Repaid by direct debit on payday') },
-    { icon: Wallet, label: tKey('Salary verified with payroll') },
-    { icon: Languages, label: tKey('Arabic and English') },
+const ROLES = [
+    {
+        icon: Users,
+        title: tKey('Employees'),
+        body: tKey(
+            'Cover a short gap before payday, in a few taps, with a clear fee.',
+        ),
+    },
+    {
+        icon: Building2,
+        title: tKey('Employers'),
+        body: tKey(
+            'Offer a financial-wellness benefit with no payroll deductions or credit risk.',
+        ),
+    },
+    {
+        icon: Landmark,
+        title: tKey('Banks & funders'),
+        body: tKey(
+            'Move the money and hold the receivable, or take the platform white-label.',
+        ),
+    },
 ];
+
+const RAILS = ['ACH', 'WPS', 'CBO Direct Debit'];
 
 export default function Welcome() {
     const { auth, name } = usePage().props;
@@ -87,48 +107,46 @@ export default function Welcome() {
     const money = useMoney();
     const { date } = useDates();
     const portalHref = auth.user ? dashboard() : login();
+    const portalLabel = auth.user ? t('Open portal') : t('Log in');
 
     return (
         <>
             <Head title={t('Welcome')} />
             <div className="min-h-svh bg-dawn-soft px-3 py-3 sm:px-6 sm:py-6">
-                {/* Hero */}
-                <section className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-dawn px-4 pt-4 pb-16 sm:px-8 sm:pb-20">
-                    <header className="flex items-center gap-3 rounded-full bg-white/90 py-2 ps-4 pe-2 shadow-sm backdrop-blur dark:bg-black/60">
-                        <span className="flex size-8 items-center justify-center rounded-xl bg-white shadow-xs ring-1 ring-border dark:bg-white/10">
-                            <AppLogoIcon className="size-5 fill-current" />
-                        </span>
-                        <span className="hidden font-semibold tracking-tight sm:inline">
-                            {name}
-                        </span>
-                        <nav className="ms-6 hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-                            <a
-                                href="#features"
-                                className="hover:text-foreground"
-                            >
-                                {t('Why it works')}
-                            </a>
-                            <a href="#how" className="hover:text-foreground">
-                                {t('How it works')}
-                            </a>
-                        </nav>
-                        <div className="ms-auto flex items-center gap-1">
-                            <LocaleSwitcher />
-                            <Button asChild size="sm">
-                                <Link href={portalHref}>
-                                    {t(auth.user ? 'Open portal' : 'Log in')}
-                                </Link>
-                            </Button>
-                        </div>
-                    </header>
+                {/* Nav */}
+                <header className="mx-auto flex max-w-6xl items-center gap-3 rounded-full bg-card/80 py-2 ps-4 pe-2 shadow-sm ring-1 ring-border/60 backdrop-blur">
+                    <span className="flex size-8 items-center justify-center rounded-xl bg-white shadow-xs ring-1 ring-border dark:bg-white/10">
+                        <AppLogoIcon className="size-5 fill-current" />
+                    </span>
+                    <span className="font-semibold tracking-tight">{name}</span>
+                    <nav className="ms-6 hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+                        <a href="#features" className="hover:text-foreground">
+                            {t('Why it works')}
+                        </a>
+                        <a href="#how" className="hover:text-foreground">
+                            {t('How it works')}
+                        </a>
+                        <a href="#who" className="hover:text-foreground">
+                            {t('Who it is for')}
+                        </a>
+                    </nav>
+                    <div className="ms-auto flex items-center gap-1">
+                        <LocaleSwitcher />
+                        <Button asChild size="sm">
+                            <Link href={portalHref}>{portalLabel}</Link>
+                        </Button>
+                    </div>
+                </header>
 
-                    <div className="mt-12 grid items-center gap-14 lg:mt-20 lg:grid-cols-[1.1fr_1fr]">
+                {/* Hero */}
+                <section className="relative mx-auto mt-3 max-w-6xl overflow-hidden rounded-[2rem] bg-dawn px-5 pt-14 pb-16 sm:mt-6 sm:px-10 sm:pt-20 sm:pb-20">
+                    <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_1fr]">
                         <div className="space-y-6">
                             <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium backdrop-blur dark:bg-black/40">
                                 <span className="size-1.5 rounded-full bg-brand" />
                                 {t('Prototype · not a live financial service')}
                             </span>
-                            <h1 className="text-4xl leading-[1.05] font-semibold sm:text-6xl">
+                            <h1 className="text-4xl leading-[1.03] font-semibold text-balance sm:text-6xl">
                                 {t('Your salary, a little earlier.')}
                             </h1>
                             <p className="max-w-md text-lg text-foreground/75">
@@ -139,34 +157,46 @@ export default function Welcome() {
                             <div className="flex flex-wrap gap-3">
                                 <Button asChild size="lg">
                                     <Link href={portalHref}>
-                                        {t(
-                                            auth.user
-                                                ? 'Open portal'
-                                                : 'Log in',
-                                        )}
+                                        {portalLabel}
+                                        <ArrowRight className="rtl:rotate-180" />
                                     </Link>
                                 </Button>
                                 <Button
                                     asChild
                                     size="lg"
                                     variant="outline"
-                                    className="border-transparent bg-white/80 backdrop-blur hover:bg-white"
+                                    className="border-transparent bg-white/80 backdrop-blur hover:bg-white dark:bg-black/40 dark:hover:bg-black/60"
                                 >
                                     <a href="#how">{t('How it works')}</a>
                                 </Button>
                             </div>
+                            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 text-sm text-foreground/70">
+                                <span className="inline-flex items-center gap-1.5">
+                                    <ShieldCheck className="size-4 text-brand" />
+                                    {t('Licensed bank and funder partners')}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <Languages className="size-4 text-brand" />
+                                    {t('Arabic and English')}
+                                </span>
+                            </div>
                         </div>
 
-                        {/* Product moments instead of stock photography */}
+                        {/* Product moment */}
                         <div
                             className="relative mx-auto w-full max-w-sm"
                             aria-hidden="true"
                         >
-                            <div className="rounded-3xl bg-white/90 p-5 shadow-xl backdrop-blur dark:bg-black/70">
-                                <p className="text-sm text-muted-foreground">
-                                    {t('Available now')}
-                                </p>
-                                <p className="mt-1 text-3xl font-semibold tracking-tight tabular-nums">
+                            <div className="rounded-3xl bg-white/90 p-5 shadow-2xl shadow-black/10 backdrop-blur dark:bg-black/70">
+                                <div className="flex items-center justify-between">
+                                    <p className="text-sm text-muted-foreground">
+                                        {t('Available now')}
+                                    </p>
+                                    <span className="rounded-full bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand-soft-foreground">
+                                        {t('Verified')}
+                                    </span>
+                                </div>
+                                <p className="mt-1 text-4xl font-semibold tracking-tight tabular-nums">
                                     {money(150_000)}
                                 </p>
                                 <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-brand-soft">
@@ -181,7 +211,7 @@ export default function Welcome() {
                                     {t('Get an advance')}
                                 </div>
                             </div>
-                            <div className="absolute -start-4 -bottom-8 flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-lg dark:bg-black/80">
+                            <div className="absolute -start-4 -bottom-7 flex items-center gap-3 rounded-2xl bg-white/95 px-4 py-3 shadow-lg dark:bg-black/80">
                                 <span className="flex size-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                                     <CheckCircle2 className="size-4" />
                                 </span>
@@ -204,15 +234,36 @@ export default function Welcome() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Rails band */}
+                    <div className="mt-14 flex flex-col gap-4 border-t border-foreground/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-sm font-medium text-foreground/70">
+                            {t('Built on the rails Oman already uses')}
+                        </p>
+                        <ul className="flex flex-wrap items-center gap-2">
+                            {RAILS.map((rail) => (
+                                <li
+                                    key={rail}
+                                    className="rounded-full bg-white/70 px-3 py-1 text-xs font-semibold tracking-tight text-foreground/80 backdrop-blur dark:bg-black/40"
+                                    dir="ltr"
+                                >
+                                    {rail}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </section>
 
                 {/* Features */}
                 <section
                     id="features"
-                    className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-4 py-14 sm:mt-6 sm:px-10"
+                    className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-5 py-14 sm:mt-6 sm:px-10"
                 >
                     <div className="mx-auto max-w-2xl text-center">
-                        <h2 className="text-3xl font-semibold sm:text-4xl">
+                        <p className="text-sm font-semibold text-brand">
+                            {t('Why it works')}
+                        </p>
+                        <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
                             {t('Money on your terms')}
                         </h2>
                         <p className="mt-3 text-muted-foreground">
@@ -225,9 +276,9 @@ export default function Welcome() {
                         {FEATURES.map((feature) => (
                             <div
                                 key={feature.title}
-                                className="rounded-3xl bg-brand-soft/70 p-6"
+                                className="group rounded-3xl bg-brand-soft/60 p-6 transition-colors hover:bg-brand-soft"
                             >
-                                <span className="flex size-11 items-center justify-center rounded-full bg-white text-brand shadow-sm dark:bg-black/40">
+                                <span className="flex size-11 items-center justify-center rounded-2xl bg-card text-brand shadow-sm ring-1 ring-border/60">
                                     <feature.icon className="size-5" />
                                 </span>
                                 <h3 className="mt-5 text-lg font-semibold">
@@ -255,10 +306,13 @@ export default function Welcome() {
                 {/* How it works */}
                 <section
                     id="how"
-                    className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-4 py-14 sm:mt-6 sm:px-10"
+                    className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-5 py-14 sm:mt-6 sm:px-10"
                 >
                     <div className="mx-auto max-w-2xl text-center">
-                        <h2 className="text-3xl font-semibold sm:text-4xl">
+                        <p className="text-sm font-semibold text-brand">
+                            {t('How it works')}
+                        </p>
+                        <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
                             {t('Quick, and safe by design.')}
                         </h2>
                         <p className="mt-3 text-muted-foreground">
@@ -267,47 +321,101 @@ export default function Welcome() {
                             )}
                         </p>
                     </div>
-                    <ol className="mt-10 grid gap-4 md:grid-cols-3">
+                    <ol className="relative mt-12 grid gap-4 md:grid-cols-3">
+                        {/* connecting line */}
+                        <div className="pointer-events-none absolute inset-x-12 top-11 hidden h-px bg-border md:block" />
                         {STEPS.map((step, index) => (
                             <li
                                 key={step.title}
-                                className="relative overflow-hidden rounded-3xl border bg-background p-6"
+                                className="relative rounded-3xl border bg-background p-6"
                             >
-                                <span className="text-sm font-semibold text-brand tabular-nums">
-                                    0{index + 1}
+                                <span className="relative z-10 flex size-10 items-center justify-center rounded-full bg-brand text-sm font-semibold text-brand-foreground tabular-nums">
+                                    {index + 1}
                                 </span>
-                                <h3 className="mt-3 text-lg font-semibold">
+                                <h3 className="mt-4 text-lg font-semibold">
                                     {t(step.title)}
                                 </h3>
                                 <p className="mt-1 text-sm text-muted-foreground">
                                     {t(step.body)}
                                 </p>
-                                <div className="pointer-events-none absolute -end-12 -top-12 size-32 rounded-full bg-dawn opacity-30 blur-2xl" />
                             </li>
                         ))}
                     </ol>
-
-                    <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                        {TRUST.map((item) => (
-                            <li
-                                key={item.label}
-                                className="flex items-center gap-3 rounded-2xl bg-muted/60 px-4 py-3 text-sm"
-                            >
-                                <item.icon className="size-4 shrink-0 text-brand" />
-                                {t(item.label)}
-                            </li>
-                        ))}
-                    </ul>
                 </section>
 
+                {/* Who it is for */}
+                <section
+                    id="who"
+                    className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-5 py-14 sm:mt-6 sm:px-10"
+                >
+                    <div className="mx-auto max-w-2xl text-center">
+                        <p className="text-sm font-semibold text-brand">
+                            {t('Who it is for')}
+                        </p>
+                        <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
+                            {t('One platform, clear roles')}
+                        </h2>
+                        <p className="mt-3 text-muted-foreground">
+                            {t(
+                                'The technology, the money and the capital stay separate — each party does what it is licensed to do.',
+                            )}
+                        </p>
+                    </div>
+                    <div className="mt-10 grid gap-4 md:grid-cols-3">
+                        {ROLES.map((role) => (
+                            <div
+                                key={role.title}
+                                className="flex flex-col gap-3 rounded-3xl border bg-background p-6"
+                            >
+                                <span className="flex size-11 items-center justify-center rounded-2xl bg-brand-soft text-brand-soft-foreground">
+                                    <role.icon className="size-5" />
+                                </span>
+                                <h3 className="text-lg font-semibold">
+                                    {t(role.title)}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                    {t(role.body)}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* CTA */}
+                <section className="relative mx-auto mt-4 max-w-6xl overflow-hidden rounded-[2rem] bg-dawn px-6 py-14 text-center sm:mt-6 sm:px-10">
+                    <div className="mx-auto max-w-xl space-y-5">
+                        <h2 className="text-3xl font-semibold text-balance sm:text-4xl">
+                            {t('See the whole journey for yourself.')}
+                        </h2>
+                        <p className="text-foreground/75">
+                            {t(
+                                'Open the prototype and walk an advance from request to repayment across every portal.',
+                            )}
+                        </p>
+                        <div className="flex justify-center">
+                            <Button asChild size="lg">
+                                <Link href={portalHref}>
+                                    {portalLabel}
+                                    <ArrowRight className="rtl:rotate-180" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Footer */}
                 <footer className="mx-auto mt-4 max-w-6xl rounded-[2rem] bg-card px-6 py-8 text-xs text-muted-foreground sm:mt-6 sm:px-10">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-foreground">
                         <span className="flex size-6 items-center justify-center rounded-lg bg-white shadow-xs ring-1 ring-border dark:bg-white/10">
                             <AppLogoIcon className="size-4 fill-current" />
                         </span>
                         {name}
                         <span className="font-normal text-muted-foreground">
                             · {t('Ready for every situation.')}
+                        </span>
+                        <span className="ms-auto inline-flex items-center gap-1.5 font-normal">
+                            <Wallet className="size-3.5" />
+                            {t('Salary verified with payroll')}
                         </span>
                     </div>
                     <p className="mt-3 max-w-3xl">

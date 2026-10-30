@@ -9,6 +9,8 @@ use App\Enums\PartnerType;
 use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\Employer;
+use App\Models\EmployerAgreement;
+use App\Models\EmployerDocument;
 use App\Models\Partner;
 use App\Models\ProgramTerms;
 use Illuminate\Http\RedirectResponse;
@@ -81,6 +83,20 @@ class EmployerController extends Controller
                 'employees_count' => $employer->employees()->count(),
             ],
             'admins' => $employer->admins()->get(['id', 'name', 'email'])->toArray(),
+            'documents' => $employer->documents()
+                ->latest()
+                ->get()
+                ->map(fn (EmployerDocument $document): array => $document->toPortalArray()),
+            'agreement' => (function (Employer $employer): array {
+                $agreement = EmployerAgreement::forEmployer($employer);
+
+                return [
+                    'status' => $agreement->status->value,
+                    'decided_at' => $agreement->decided_at?->toIso8601String(),
+                    'version' => $agreement->version,
+                    'has_signed' => $agreement->signed_path !== null,
+                ];
+            })($employer),
             'terms' => ProgramTermsController::present(ProgramTerms::forEmployer($employer)),
             'hasOverride' => $override !== null,
             'partners' => $this->partnerOptions(),

@@ -1,7 +1,9 @@
 import {
     Building2,
+    Files,
     FileText,
     FlaskConical,
+    FileSignature,
     HandCoins,
     Handshake,
     History,
@@ -12,6 +14,7 @@ import {
     Settings2,
     UserRound,
     Users,
+    Workflow,
 } from 'lucide-react';
 import admin from '@/routes/admin';
 import app from '@/routes/app';
@@ -53,6 +56,16 @@ export function navItemsFor(role: Role): NavItem[] {
                     icon: Users,
                 },
                 {
+                    title: tKey('Documents'),
+                    href: employer.documents.index(),
+                    icon: Files,
+                },
+                {
+                    title: tKey('Agreement'),
+                    href: employer.agreement.show(),
+                    icon: FileSignature,
+                },
+                {
                     title: tKey('Company settings'),
                     href: employer.settings.edit(),
                     icon: Settings2,
@@ -84,6 +97,11 @@ export function navItemsFor(role: Role): NavItem[] {
                     title: tKey('Program terms'),
                     href: admin.terms.edit(),
                     icon: SlidersHorizontal,
+                },
+                {
+                    title: tKey('Workflow'),
+                    href: admin.workflow.show(),
+                    icon: Workflow,
                 },
                 {
                     title: tKey('Disclosures'),

@@ -28,6 +28,11 @@ class FakeFunderGateway implements FunderGateway
         return GatewayResult::success('FND-'.Str::upper(Str::random(10)));
     }
 
+    public function reverseFunding(Advance $advance): GatewayResult
+    {
+        return GatewayResult::success('REV-'.Str::upper(Str::random(10)));
+    }
+
     public function reportRepayment(Advance $advance): GatewayResult
     {
         return GatewayResult::success('RPY-'.Str::upper(Str::random(10)));

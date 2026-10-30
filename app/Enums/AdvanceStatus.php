@@ -30,7 +30,7 @@ enum AdvanceStatus: string
             self::Requested => [self::Approved, self::Rejected, self::Cancelled],
             self::Approved => [self::Disbursing, self::Cancelled],
             self::Disbursing => [self::Disbursed, self::DisbursementFailed],
-            self::Disbursed => [self::Collected, self::CollectionFailed],
+            self::Disbursed => [self::Collected, self::CollectionFailed, self::Overdue],
             self::CollectionFailed => [self::Collected, self::CollectionFailed, self::Overdue],
             self::Overdue => [self::Collected, self::WrittenOff],
             self::Rejected, self::Cancelled, self::DisbursementFailed, self::Collected, self::WrittenOff => [],

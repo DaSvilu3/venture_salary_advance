@@ -77,6 +77,11 @@ class ProgramTermsController extends Controller
             'min_tenure_months' => $terms->min_tenure_months,
             'cutoff_days_before_payday' => $terms->cutoff_days_before_payday,
             'max_draws_per_cycle' => $terms->max_draws_per_cycle,
+            'collection_max_attempts' => $terms->collection_max_attempts,
+            'collection_retry_days' => $terms->collection_retry_days,
+            'collection_offset_days' => $terms->collection_offset_days,
+            'disbursement_sla_hours' => $terms->disbursement_sla_hours,
+            'auto_approve' => $terms->auto_approve ? '1' : '0',
         ];
     }
 
@@ -93,6 +98,11 @@ class ProgramTermsController extends Controller
             'min_tenure_months' => ['required', 'integer', 'between:0,24'],
             'cutoff_days_before_payday' => ['required', 'integer', 'between:0,15'],
             'max_draws_per_cycle' => ['required', 'integer', 'between:1,10'],
+            'collection_max_attempts' => ['required', 'integer', 'between:1,10'],
+            'collection_retry_days' => ['required', 'integer', 'between:1,30'],
+            'collection_offset_days' => ['required', 'integer', 'between:0,30'],
+            'disbursement_sla_hours' => ['required', 'integer', 'between:1,168'],
+            'auto_approve' => ['required', 'boolean'],
         ]);
 
         return [
@@ -104,6 +114,11 @@ class ProgramTermsController extends Controller
             'min_tenure_months' => (int) $data['min_tenure_months'],
             'cutoff_days_before_payday' => (int) $data['cutoff_days_before_payday'],
             'max_draws_per_cycle' => (int) $data['max_draws_per_cycle'],
+            'collection_max_attempts' => (int) $data['collection_max_attempts'],
+            'collection_retry_days' => (int) $data['collection_retry_days'],
+            'collection_offset_days' => (int) $data['collection_offset_days'],
+            'disbursement_sla_hours' => (int) $data['disbursement_sla_hours'],
+            'auto_approve' => filter_var($data['auto_approve'], FILTER_VALIDATE_BOOLEAN),
         ];
     }
 }
