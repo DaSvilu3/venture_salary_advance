@@ -50,8 +50,6 @@ services:
       - app-storage:/var/www/html/storage/app
     expose:
       - "8080"
-    ports:
-      - "${APP_PORT:-8080}:8080"
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8080/up"]
       interval: 15s
@@ -64,6 +62,12 @@ services:
     restart: unless-stopped
     entrypoint: ["php", "/var/www/html/artisan"]
     command: ["queue:work", "--sleep=3", "--tries=3", "--max-time=3600"]
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     environment:
       <<: *app-env
     depends_on:
@@ -77,6 +81,12 @@ services:
     restart: unless-stopped
     entrypoint: ["php", "/var/www/html/artisan"]
     command: ["schedule:work"]
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     environment:
       <<: *app-env
     depends_on:
