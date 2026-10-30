@@ -1,0 +1,107 @@
+# Zarf — Coolify / Docker Compose deployment (app + queue worker + scheduler + MySQL).
+#
+# On Coolify: create a "Docker Compose" resource pointing at this file and set the
+# environment variables below (at minimum APP_KEY, APP_URL, DB_PASSWORD, DB_ROOT_PASSWORD).
+# Generate an app key with:  php artisan key:generate --show
+#
+# The app container runs migrations automatically on boot (serversideup AUTORUN).
+# Seed the demo data once after the first deploy:  php artisan db:seed --force
+
+x-app-env: &app-env
+  APP_NAME: "${APP_NAME:-Zarf}"
+  APP_ENV: production
+  APP_KEY: "${APP_KEY:?set APP_KEY}"
+  APP_DEBUG: "false"
+  APP_URL: "${APP_URL:-http://localhost:8080}"
+  APP_LOCALE: "${APP_LOCALE:-en}"
+  APP_FALLBACK_LOCALE: en
+  LOG_CHANNEL: stderr
+  DB_CONNECTION: mysql
+  DB_HOST: mysql
+  DB_PORT: "3306"
+  DB_DATABASE: "${DB_DATABASE:-zarf}"
+  DB_USERNAME: "${DB_USERNAME:-zarf}"
+  DB_PASSWORD: "${DB_PASSWORD:?set DB_PASSWORD}"
+  SESSION_DRIVER: database
+  CACHE_STORE: database
+  QUEUE_CONNECTION: database
+  FILESYSTEM_DISK: local
+  MAIL_MAILER: log
+  # Integrations are simulated in this prototype — no real money moves.
+  SALARY_ACCESS_BANK_DRIVER: fake
+  SALARY_ACCESS_FUNDER_DRIVER: fake
+  SALARY_ACCESS_PAYROLL_DRIVER: fake
+
+x-app-build: &app-build
+  build:
+    context: .
+    dockerfile: Dockerfile
+
+services:
+  app:
+    <<: *app-build
+    restart: unless-stopped
+    environment:
+      <<: *app-env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - app-storage:/var/www/html/storage/app
+    expose:
+      - "8080"
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/up"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+  worker:
+    <<: *app-build
+    restart: unless-stopped
+    entrypoint: ["php", "/var/www/html/artisan"]
+    command: ["queue:work", "--sleep=3", "--tries=3", "--max-time=3600"]
+    environment:
+      <<: *app-env
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - app-storage:/var/www/html/storage/app
+
+  scheduler:
+    <<: *app-build
+    restart: unless-stopped
+    entrypoint: ["php", "/var/www/html/artisan"]
+    command: ["schedule:work"]
+    environment:
+      <<: *app-env
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - app-storage:/var/www/html/storage/app
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE:-zarf}"
+      MYSQL_USER: "${DB_USERNAME:-zarf}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:?set DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  mysql-data:
+  app-storage:

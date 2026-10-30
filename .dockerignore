@@ -1,0 +1,35 @@
+# Version control & CI
+.git
+.github
+.gitattributes
+
+# Dependencies and build output (installed/built fresh inside the image)
+/node_modules
+/vendor
+/public/build
+/public/hot
+
+# Local environment & secrets
+.env
+.env.*
+!.env.example
+
+# Local SQLite database (production uses MySQL)
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Runtime storage (persisted via a volume, never baked into the image)
+/storage/app/public/*
+/storage/app/private/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Tooling caches & editor cruft
+/.phpunit.cache
+/.phpunit.result.cache
+.DS_Store
+npm-debug.log
+yarn-error.log
